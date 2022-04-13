@@ -165,7 +165,6 @@ class GameServiceSpec extends Specification {
         gameService.update(givenHomeTeam, givenAwayTeam)
 
         then:
-        2 * teamValidator.test(_ as String) >> true
         1 * gameValidator.checkGameExists(_ as Team, _ as Team) >> { args ->
             def homeTeam = args[0] as Team
             def awayTeam = args[1] as Team
