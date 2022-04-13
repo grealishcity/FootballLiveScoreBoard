@@ -2,7 +2,9 @@ package com.grealishcity.scoreboard.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.grealishcity.scoreboard.comparator.GameTotalScoreComparator;
 import com.grealishcity.scoreboard.exception.ObjectNotFoundException;
 import com.grealishcity.scoreboard.model.Game;
 import com.grealishcity.scoreboard.model.Team;
@@ -37,7 +39,9 @@ public class GameDao {
     }
 
     public List<Game> getSummaryByTotalScore() {
-        
+        return games.stream()
+                .sorted(new GameTotalScoreComparator())
+                .collect(Collectors.toList());
     }
 
     public List<Game> getGames() {
