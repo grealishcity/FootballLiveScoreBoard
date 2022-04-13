@@ -2,15 +2,17 @@ package com.grealishcity.scoreboard.service
 
 import com.grealishcity.scoreboard.dao.GameDao
 import com.grealishcity.scoreboard.model.Team
+import com.grealishcity.scoreboard.validator.TeamValidator
 import spock.lang.Specification
 import spock.lang.Subject
 
 class GameServiceSpec extends Specification {
 
     def gameDao = Mock(GameDao)
+    def teamValidator = Mock(TeamValidator)
 
     @Subject
-    def gameService = new GameService(gameDao)
+    def gameService = new GameService(gameDao, teamValidator)
 
     def "should create a new game"() {
         given:
@@ -30,6 +32,34 @@ class GameServiceSpec extends Specification {
             assert awayTeam.name == awayTeamName
             assert awayTeam.currentNumberOfGoals == 0
         }
-        noExceptionThrown()
+    }
+
+    def "should throw exception when given home team is not correct"() {
+        given:
+        def homeTeamName = "aa"
+        def awayTeamName = "Germany"
+
+        when:
+        gameService.create(homeTeamName, awayTeamName)
+
+        then:
+        1 * teamValidator.test(homeTeamName) >> false
+        def e = thrown(IllegalArgumentException)
+        e.message == "Illegal team name given"
+    }
+
+    def "should throw exception when given away team is not correct"() {
+        given:
+        def homeTeamName = "Poland"
+        def awayTeamName = "aa"
+
+        when:
+        gameService.create(homeTeamName, awayTeamName)
+
+        then:
+        1 * teamValidator.test(homeTeamName) >> true
+        1 * teamValidator.test(awayTeamName) >> false
+        def e = thrown(IllegalArgumentException)
+        e.message == "Illegal team name given"
     }
 }
