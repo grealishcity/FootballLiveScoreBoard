@@ -10,29 +10,38 @@ class GameValidatorSpec extends Specification {
 
     def "should return true when game not exists"() {
         given:
+        def homeTeamName = "Poland"
+        def awayTeamName = "Germany"
 
         when:
+        def result = gameValidator.test(homeTeamName, awayTeamName)
 
         then:
-        noExceptionThrown()
+        result
     }
 
     def "should return false when game already exists"() {
         given:
+        def homeTeamName = "Poland"
+        def awayTeamName = "Germany"
 
         when:
+        def result = gameValidator.test(homeTeamName, awayTeamName)
 
         then:
-        noExceptionThrown()
+        !result
     }
 
     def "should return false when team is already on board"() {
         given:
+        def homeTeamName = "Poland"
+        def awayTeamName = "Germany"
 
         when:
+        def result = gameValidator.test(homeTeamName, awayTeamName)
 
         then:
-        noExceptionThrown()
+        !result
     }
 
 }
