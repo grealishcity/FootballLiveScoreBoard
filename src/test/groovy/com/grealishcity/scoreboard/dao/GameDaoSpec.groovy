@@ -1,6 +1,6 @@
 package com.grealishcity.scoreboard.dao
 
-import com.grealishcity.scoreboard.model.Game
+
 import com.grealishcity.scoreboard.model.Team
 import spock.lang.Specification
 import spock.lang.Subject
@@ -21,5 +21,20 @@ class GameDaoSpec extends Specification {
         then:
         !gameDao.games.isEmpty()
         gameDao.games.find {it.getHomeTeam() == (homeTeam) && it.getAwayTeam() == (awayTeam)}
+    }
+
+    def "should remove game from list"() {
+        given:
+        def homeTeam = new Team("Poland")
+        def awayTeam = new Team("Germany")
+
+        gameDao.create(homeTeam, awayTeam)
+
+        when:
+        gameDao.finish(homeTeam, awayTeam)
+
+        then:
+        gameDao.games.isEmpty()
+        !gameDao.games.find {it.getHomeTeam() == (homeTeam) && it.getAwayTeam() == (awayTeam)}
     }
 }
