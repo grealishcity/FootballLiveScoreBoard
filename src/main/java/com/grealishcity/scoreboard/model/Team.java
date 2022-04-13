@@ -10,6 +10,11 @@ public class Team {
         this.currentNumberOfGoals = 0;
     }
 
+    public Team(String name, Integer currentNumberOfGoals) {
+        this.name = name;
+        this.currentNumberOfGoals = currentNumberOfGoals;
+    }
+
     public String getName() {
         return name;
     }

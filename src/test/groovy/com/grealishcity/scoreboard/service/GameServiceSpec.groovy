@@ -152,4 +152,38 @@ class GameServiceSpec extends Specification {
         e.message == "Game not found for given home team: " + notExistingTeam + " and away team: " + notExistingTeam
     }
 
+    def "should update game score"() {
+        given:
+        def homeTeamName = "Poland"
+        def awayTeamName = "Germany"
+        def homeTeamGoals = 5
+        def awayTeamGoals = 4
+        def givenHomeTeam = new Team(homeTeamName, homeTeamGoals)
+        def givenAwayTeam = new Team(awayTeamName, awayTeamGoals)
+
+        when:
+        gameService.update(givenHomeTeam, givenAwayTeam)
+
+        then:
+        2 * teamValidator.test(_ as String) >> true
+        1 * gameValidator.checkGameExists(_ as Team, _ as Team) >> { args ->
+            def homeTeam = args[0] as Team
+            def awayTeam = args[1] as Team
+
+            assert homeTeam.name == homeTeamName
+            assert homeTeam.currentNumberOfGoals == 5
+            assert awayTeam.name == awayTeamName
+            assert awayTeam.currentNumberOfGoals == 4
+        } >> true
+        1 * gameDao.update(_ as Team, _ as Team) >> { args ->
+            def homeTeam = args[0] as Team
+            def awayTeam = args[1] as Team
+
+            assert homeTeam.name == homeTeamName
+            assert homeTeam.currentNumberOfGoals == 5
+            assert awayTeam.name == awayTeamName
+            assert awayTeam.currentNumberOfGoals == 4
+        }
+    }
+
 }
