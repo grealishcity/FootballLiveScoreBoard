@@ -6,6 +6,25 @@ public class TeamValidator implements Predicate<String> {
 
     @Override
     public boolean test(String teamName) {
-        return false;
+        boolean isCorrect = true;
+        String teamNamePattern = "[a-zA-Z]+";
+
+        if (teamName == null) {
+            isCorrect = false;
+        } else {
+            if (teamName.isEmpty()) {
+                isCorrect = false;
+            }
+
+            if (!teamName.matches(teamNamePattern)) {
+                isCorrect = false;
+            }
+
+            if (teamName.length() < 3 || teamName.length() > 100) {
+                isCorrect = false;
+            }
+        }
+
+        return isCorrect;
     }
 }
