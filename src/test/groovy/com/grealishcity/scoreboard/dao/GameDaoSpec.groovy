@@ -22,7 +22,7 @@ class GameDaoSpec extends Specification {
         def awayTeam = new Team("Germany")
 
         when:
-        gameDao.create(homeTeam, awayTeam);
+        gameDao.create(homeTeam, awayTeam)
 
         then:
         !gameDao.games.isEmpty()
@@ -69,7 +69,7 @@ class GameDaoSpec extends Specification {
         def updatedHomeTeam = new Team(homeTeamName, 5)
         def updatedAwayTeam = new Team(awayTeamName, 3)
 
-        gameDao.create(homeTeam, awayTeam);
+        gameDao.create(homeTeam, awayTeam)
 
         when:
         gameDao.update(updatedHomeTeam, updatedAwayTeam)
@@ -79,10 +79,42 @@ class GameDaoSpec extends Specification {
     }
 
     def "should return summary od games by total score"() {
+        given:
+        def homeTeamsNames = ["Poland", "Portugal", "Austria"]
+        def awayTeamsNames = ["Germany", "Russia", "France"]
+        def homeTeams = [
+                new Team(homeTeamsNames.get(0)),
+                new Team(homeTeamsNames.get(1)),
+                new Team(homeTeamsNames.get(2))
+        ]
+        def awayTeams = [
+                new Team(awayTeamsNames.get(0)),
+                new Team(awayTeamsNames.get(1)),
+                new Team(awayTeamsNames.get(2))
+        ]
+
+        createGamesAndUpdate(homeTeams, awayTeams)
+
         when:
-        gameDao.getSummaryByTotalScore()
+        def gamesByTotalScore = gameDao.getSummaryByTotalScore()
 
         then:
         noExceptionThrown()
+    }
+
+    def createGamesAndUpdate(homeTeams, awayTeams) {
+        def random = new Random()
+        def range = 10
+        for (int i = 0; i < 3; i++) {
+            def homeTeam = homeTeams.get(i)
+            def awayTeam = awayTeams.get(i)
+
+            gameDao.create(homeTeam, awayTeam)
+
+            homeTeam.currentNumberOfGoals = random.nextInt(range)
+            awayTeam.currentNumberOfGoals = random.nextInt(range)
+
+            gameDao.update(homeTeam, awayTeam)
+        }
     }
 }

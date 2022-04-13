@@ -36,6 +36,10 @@ public class GameDao {
                 .orElseThrow(() -> new ObjectNotFoundException("Game not found for given home team: " + homeTeam.getName() + " and away team: " + awayTeam.getName()));
     }
 
+    public List<Game> getSummaryByTotalScore() {
+        
+    }
+
     public List<Game> getGames() {
         return games;
     }
