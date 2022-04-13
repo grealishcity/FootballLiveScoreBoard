@@ -22,4 +22,8 @@ public class Team {
     public Integer getCurrentNumberOfGoals() {
         return currentNumberOfGoals;
     }
+
+    public void setCurrentNumberOfGoals(Integer currentNumberOfGoals) {
+        this.currentNumberOfGoals = currentNumberOfGoals;
+    }
 }
