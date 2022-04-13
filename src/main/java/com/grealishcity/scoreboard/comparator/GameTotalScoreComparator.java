@@ -12,9 +12,9 @@ public class GameTotalScoreComparator implements Comparator<Game> {
         int totalNumberOfGoalsSecondGame = getTotalNumberOfGoals(secondGame);
 
         if (totalNumberOfGoalsFirstGame != totalNumberOfGoalsSecondGame) {
-            return Integer.compare(totalNumberOfGoalsFirstGame, totalNumberOfGoalsSecondGame);
+            return Integer.compare(totalNumberOfGoalsSecondGame, totalNumberOfGoalsFirstGame);
         } else {
-            return firstGame.getCreated().compareTo(secondGame.getCreated());
+            return secondGame.getCreated().compareTo(firstGame.getCreated());
         }
     }
 

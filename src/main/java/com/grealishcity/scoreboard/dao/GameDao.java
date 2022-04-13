@@ -39,9 +39,10 @@ public class GameDao {
     }
 
     public List<Game> getSummaryByTotalScore() {
-        return games.stream()
+        List<Game> collect = games.stream()
                 .sorted(new GameTotalScoreComparator())
                 .collect(Collectors.toList());
+        return collect;
     }
 
     public List<Game> getGames() {
