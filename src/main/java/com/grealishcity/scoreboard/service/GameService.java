@@ -19,7 +19,6 @@ public class GameService {
     }
 
     public void create(String homeTeamName, String awayTeamName) {
-        //TODO: Teams validation, game validation
         validateTeamsNames(homeTeamName, awayTeamName);
 
         Team homeTeam = new Team(homeTeamName);
