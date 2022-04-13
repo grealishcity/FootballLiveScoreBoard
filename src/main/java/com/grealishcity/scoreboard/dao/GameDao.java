@@ -17,4 +17,8 @@ public class GameDao {
     public void create(Team homeTeam, Team awayTeam) {
         games.add(new Game(homeTeam, awayTeam));
     }
+
+    public List<Game> getGames() {
+        return games;
+    }
 }
