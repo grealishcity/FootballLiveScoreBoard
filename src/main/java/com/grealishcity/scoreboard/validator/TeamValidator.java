@@ -4,27 +4,10 @@ import java.util.function.Predicate;
 
 public class TeamValidator implements Predicate<String> {
 
+    private static final String TEAM_NAME_PATTERN = "[a-zA-Z]{3,100}";
+
     @Override
     public boolean test(String teamName) {
-        boolean isCorrect = true;
-        String teamNamePattern = "[a-zA-Z]+";
-
-        if (teamName == null) {
-            isCorrect = false;
-        } else {
-            if (teamName.isEmpty()) {
-                isCorrect = false;
-            }
-
-            if (!teamName.matches(teamNamePattern)) {
-                isCorrect = false;
-            }
-
-            if (teamName.length() < 3 || teamName.length() > 100) {
-                isCorrect = false;
-            }
-        }
-
-        return isCorrect;
+        return teamName != null && teamName.matches(TEAM_NAME_PATTERN);
     }
 }
