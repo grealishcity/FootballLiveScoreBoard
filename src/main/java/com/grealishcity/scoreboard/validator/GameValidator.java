@@ -18,6 +18,11 @@ public class GameValidator implements Predicate<Team> {
         return checkTeamIsAlreadyOnBoard(team);
     }
 
+    public boolean checkGameExists(Team homeTeam, Team awayTeam) {
+        return gameDao.getGames().stream()
+                .anyMatch(game -> game.getHomeTeam().equals(homeTeam) && game.getAwayTeam().equals(awayTeam));
+    }
+
 
     private boolean checkTeamIsAlreadyOnBoard(Team teamName) {
         return gameDao.getGames().stream()

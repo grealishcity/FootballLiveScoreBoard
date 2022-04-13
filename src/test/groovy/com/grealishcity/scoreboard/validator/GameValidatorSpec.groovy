@@ -1,6 +1,7 @@
 package com.grealishcity.scoreboard.validator
 
 import com.grealishcity.scoreboard.dao.GameDao
+import com.grealishcity.scoreboard.model.Game
 import com.grealishcity.scoreboard.model.Team
 import spock.lang.Specification
 import spock.lang.Subject
@@ -20,17 +21,20 @@ class GameValidatorSpec extends Specification {
         def result = gameValidator.test(team)
 
         then:
+        1 * gameDao.getGames() >> [new Game(team, team)]
         result
     }
 
     def "should return false when team is already on board"() {
         given:
         def team = new Team("Poland")
+        def notExistingTeam = new Team("test")
 
         when:
         def result = gameValidator.test(team)
 
         then:
+        1 * gameDao.getGames() >> [new Game(notExistingTeam, notExistingTeam)]
         !result
     }
 
@@ -43,6 +47,7 @@ class GameValidatorSpec extends Specification {
         def result = gameValidator.checkGameExists(homeTeam, awayTeam)
 
         then:
+        1 * gameDao.getGames() >> [new Game(homeTeam, awayTeam)]
         result
     }
 
@@ -55,6 +60,7 @@ class GameValidatorSpec extends Specification {
         def result = gameValidator.checkGameExists(homeTeam, awayTeam)
 
         then:
+        1 * gameDao.getGames() >> []
         !result
     }
 
