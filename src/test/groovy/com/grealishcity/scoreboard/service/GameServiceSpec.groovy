@@ -100,20 +100,23 @@ class GameServiceSpec extends Specification {
 
     def "should finish game"() {
         given:
+        def homeTeamName = "Poland"
+        def awayTeamName = "Germany"
 
         when:
+        gameService.finish(homeTeamName, awayTeamName)
 
         then:
         noExceptionThrown()
     }
 
-    def "should throw exception when game not exists"() {
-        given:
-
-        when:
-
-        then:
-        noExceptionThrown()
-    }
+//    def "should throw exception when game not exists"() {
+//        given:
+//
+//        when:
+//
+//        then:
+//        noExceptionThrown()
+//    }
 
 }

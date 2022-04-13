@@ -29,6 +29,10 @@ public class GameService {
         gameDao.create(homeTeam, awayTeam);
     }
 
+    public void finish(String homeTeamName, String awayTeamName) {
+
+    }
+
     private void validateTeamIsAlreadyOnBoard(Team homeTeam, Team awayTeam) {
         if (gameValidator.test(homeTeam)) {
             throw new IllegalStateException("Team is already on board: " + homeTeam.getName());
