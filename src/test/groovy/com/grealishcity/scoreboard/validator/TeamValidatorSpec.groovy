@@ -10,7 +10,7 @@ class TeamValidatorSpec extends Specification {
 
     def "should return true when team name is correct"() {
         given:
-        def teamName = "test"
+        def teamName = "testtest"
 
         when:
         def result = teamValidator.test(teamName);
@@ -21,57 +21,57 @@ class TeamValidatorSpec extends Specification {
 
     def "should return false when team name is null"() {
         given:
-        def teamName = "test"
+        def teamName = null
 
         when:
         def result = teamValidator.test(teamName);
 
         then:
-        result
+        !result
     }
 
     def "should return false when team name is empty"() {
         given:
-        def teamName = "test"
+        def teamName = ""
 
         when:
         def result = teamValidator.test(teamName);
 
         then:
-        result
+        !result
     }
 
     def "should return false when team name contains illegal characters"() {
         given:
-        def teamName = "test"
+        def teamName = "%!%2)"
 
         when:
         def result = teamValidator.test(teamName);
 
         then:
-        result
+        !result
     }
 
     def "should return false when team name length is greater than 100"() {
         given:
-        def teamName = "test"
+        def teamName = "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest"
 
         when:
         def result = teamValidator.test(teamName);
 
         then:
-        result
+        !result
     }
 
-    def "should return false when team name length is lesser than 5"() {
+    def "should return false when team name length is lesser than 3"() {
         given:
-        def teamName = "test"
+        def teamName = "aa"
 
         when:
         def result = teamValidator.test(teamName);
 
         then:
-        result
+        !result
     }
 }
 
