@@ -1,6 +1,7 @@
 package com.grealishcity.scoreboard.service
 
 import com.grealishcity.scoreboard.dao.GameDao
+import com.grealishcity.scoreboard.exception.ObjectNotFoundException
 import com.grealishcity.scoreboard.model.Team
 import com.grealishcity.scoreboard.validator.GameValidator
 import com.grealishcity.scoreboard.validator.TeamValidator
@@ -116,7 +117,7 @@ class GameServiceSpec extends Specification {
             assert homeTeam.currentNumberOfGoals == 0
             assert awayTeam.name == awayTeamName
             assert awayTeam.currentNumberOfGoals == 0
-        } >> true
+        }
         1 * gameDao.finish(_ as Team, _ as Team) >> { args ->
             def homeTeam = args[0] as Team
             def awayTeam = args[1] as Team
@@ -128,13 +129,26 @@ class GameServiceSpec extends Specification {
         }
     }
 
-//    def "should throw exception when game not exists"() {
-//        given:
-//
-//        when:
-//
-//        then:
-//        noExceptionThrown()
-//    }
+    def "should throw exception when game not exists"() {
+        given:
+        def notExistingTeam = "Poland"
+
+        when:
+        gameService.finish(notExistingTeam, notExistingTeam)
+
+        then:
+        2 * teamValidator.test(_ as String) >> true
+        1 * gameValidator.checkGameExists(_ as Team, _ as Team) >> { args ->
+            def homeTeam = args[0] as Team
+            def awayTeam = args[1] as Team
+
+            assert homeTeam.name == notExistingTeam
+            assert homeTeam.currentNumberOfGoals == 0
+            assert awayTeam.name == notExistingTeam
+            assert awayTeam.currentNumberOfGoals == 0
+        } >> true
+        def e = thrown(ObjectNotFoundException)
+        e.message == "Game not found for given home team: " + notExistingTeam + " and away team: " + notExistingTeam
+    }
 
 }
