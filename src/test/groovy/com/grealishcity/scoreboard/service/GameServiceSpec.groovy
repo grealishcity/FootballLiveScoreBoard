@@ -97,4 +97,23 @@ class GameServiceSpec extends Specification {
         def e = thrown(IllegalStateException)
         e.message == "Team is already on board: " + awayTeamName
     }
+
+    def "should finish game"() {
+        given:
+
+        when:
+
+        then:
+        noExceptionThrown()
+    }
+
+    def "should throw exception when game not exists"() {
+        given:
+
+        when:
+
+        then:
+        noExceptionThrown()
+    }
+
 }
