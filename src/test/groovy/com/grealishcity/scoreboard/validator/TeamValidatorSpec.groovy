@@ -10,9 +10,12 @@ class TeamValidatorSpec extends Specification {
 
     def "should return true when given teams names are correct"() {
         given:
+        def teamName = "test"
 
         when:
+        teamValidator.validate(teamName);
 
         then:
+        noExceptionThrown()
     }
 }
