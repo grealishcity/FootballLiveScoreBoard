@@ -1,7 +1,9 @@
 package com.grealishcity.scoreboard.dao
 
+import com.grealishcity.scoreboard.exception.EmptyListException
 import com.grealishcity.scoreboard.exception.ObjectNotFoundException
 import com.grealishcity.scoreboard.model.Team
+import org.testng.annotations.AfterMethod
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -9,6 +11,11 @@ class GameDaoSpec extends Specification {
 
     @Subject
     def gameDao = new GameDao()
+
+    @AfterMethod
+    void afterMethod() {
+        gameDao.games.clear()
+    }
 
     def "should add new match to game list"() {
         given:
@@ -42,13 +49,16 @@ class GameDaoSpec extends Specification {
         given:
         def homeTeam = new Team("Poland")
         def awayTeam = new Team("Germany")
+        def notExistingTeam = new Team("test")
+
+        gameDao.create(homeTeam, awayTeam)
 
         when:
-        gameDao.finish(homeTeam, awayTeam)
+        gameDao.finish(notExistingTeam, notExistingTeam)
 
         then:
         def e = thrown(ObjectNotFoundException)
-        e.message == "Game not found"
+        e.message == "Game not found for given home team: " + notExistingTeam + " and away team: " + notExistingTeam
     }
 
     def "should throw exception when game list is empty"() {
@@ -60,7 +70,7 @@ class GameDaoSpec extends Specification {
         gameDao.finish(homeTeam, awayTeam)
 
         then:
-        def e = thrown(EmptyGameListException)
-        e.message == "Game list is empty"
+        def e = thrown(EmptyListException)
+        e.message == "Game list is empty. Can't remove game from empty list."
     }
 }
