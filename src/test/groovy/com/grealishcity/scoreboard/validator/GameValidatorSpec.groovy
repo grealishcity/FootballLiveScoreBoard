@@ -12,37 +12,23 @@ class GameValidatorSpec extends Specification {
     @Subject
     def gameValidator = new GameValidator(gameDao)
 
-    def "should return true when game not exists"() {
+    def "should return true when team is not already on board"() {
         given:
-        def homeTeamName = new Team("Poland")
-        def awayTeamName = new Team("Germany")
+        def teamName = new Team("Poland")
 
         when:
-        def result = gameValidator.test(homeTeamName, awayTeamName)
+        def result = gameValidator.test(teamName)
 
         then:
         result
     }
 
-    def "should return false when game already exists"() {
-        given:
-        def homeTeamName = new Team("Poland")
-        def awayTeamName = new Team("Germany")
-
-        when:
-        def result = gameValidator.test(homeTeamName, awayTeamName)
-
-        then:
-        !result
-    }
-
     def "should return false when team is already on board"() {
         given:
-        def homeTeamName = new Team("Poland")
-        def awayTeamName = new Team("Germany")
+        def teamName = new Team("Poland")
 
         when:
-        def result = gameValidator.test(homeTeamName, awayTeamName)
+        def result = gameValidator.test(teamName)
 
         then:
         !result
