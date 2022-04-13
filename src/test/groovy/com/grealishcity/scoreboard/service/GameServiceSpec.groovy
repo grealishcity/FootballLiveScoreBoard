@@ -2,6 +2,7 @@ package com.grealishcity.scoreboard.service
 
 import com.grealishcity.scoreboard.dao.GameDao
 import com.grealishcity.scoreboard.model.Team
+import com.grealishcity.scoreboard.validator.GameValidator
 import com.grealishcity.scoreboard.validator.TeamValidator
 import spock.lang.Specification
 import spock.lang.Subject
@@ -10,6 +11,7 @@ class GameServiceSpec extends Specification {
 
     def gameDao = Mock(GameDao)
     def teamValidator = Mock(TeamValidator)
+    def gameValidator = Mock(GameValidator)
 
     @Subject
     def gameService = new GameService(gameDao, teamValidator)
@@ -33,6 +35,7 @@ class GameServiceSpec extends Specification {
             assert awayTeam.name == awayTeamName
             assert awayTeam.currentNumberOfGoals == 0
         }
+        2 * gameValidator.test(_ as Team) >> true
     }
 
     def "should throw exception when given home team is not correct"() {
