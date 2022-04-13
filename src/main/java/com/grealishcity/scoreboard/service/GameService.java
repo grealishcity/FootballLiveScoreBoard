@@ -5,7 +5,7 @@ import com.grealishcity.scoreboard.model.Team;
 
 public class GameService {
 
-    private GameDao gameDao;
+    private final GameDao gameDao;
 
     public GameService(GameDao gameDao) {
         this.gameDao = gameDao;
