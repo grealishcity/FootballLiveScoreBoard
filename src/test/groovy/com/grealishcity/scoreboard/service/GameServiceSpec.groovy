@@ -117,6 +117,7 @@ class GameServiceSpec extends Specification {
             assert homeTeam.currentNumberOfGoals == 0
             assert awayTeam.name == awayTeamName
             assert awayTeam.currentNumberOfGoals == 0
+            true
         }
         1 * gameDao.finish(_ as Team, _ as Team) >> { args ->
             def homeTeam = args[0] as Team
@@ -146,7 +147,7 @@ class GameServiceSpec extends Specification {
             assert homeTeam.currentNumberOfGoals == 0
             assert awayTeam.name == notExistingTeam
             assert awayTeam.currentNumberOfGoals == 0
-        } >> true
+        }
         def e = thrown(ObjectNotFoundException)
         e.message == "Game not found for given home team: " + notExistingTeam + " and away team: " + notExistingTeam
     }

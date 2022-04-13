@@ -1,6 +1,7 @@
 package com.grealishcity.scoreboard.service;
 
 import com.grealishcity.scoreboard.dao.GameDao;
+import com.grealishcity.scoreboard.exception.ObjectNotFoundException;
 import com.grealishcity.scoreboard.model.Team;
 import com.grealishcity.scoreboard.validator.GameValidator;
 import com.grealishcity.scoreboard.validator.TeamValidator;
@@ -35,7 +36,9 @@ public class GameService {
         Team homeTeam = new Team(homeTeamName);
         Team awayTeam = new Team(awayTeamName);
 
-        gameValidator.checkGameExists(homeTeam, awayTeam);
+        if (!gameValidator.checkGameExists(homeTeam, awayTeam)) {
+            throw new ObjectNotFoundException("Game not found for given home team: " + homeTeamName + " and away team: " + awayTeamName);
+        }
         gameDao.finish(homeTeam, awayTeam);
     }
 
