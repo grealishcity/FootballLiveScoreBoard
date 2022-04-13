@@ -14,10 +14,10 @@ class GameValidatorSpec extends Specification {
 
     def "should return true when team is not already on board"() {
         given:
-        def teamName = new Team("Poland")
+        def team = new Team("Poland")
 
         when:
-        def result = gameValidator.test(teamName)
+        def result = gameValidator.test(team)
 
         then:
         result
@@ -25,10 +25,34 @@ class GameValidatorSpec extends Specification {
 
     def "should return false when team is already on board"() {
         given:
-        def teamName = new Team("Poland")
+        def team = new Team("Poland")
 
         when:
-        def result = gameValidator.test(teamName)
+        def result = gameValidator.test(team)
+
+        then:
+        !result
+    }
+
+    def "should return true when game exists"() {
+        given:
+        def homeTeam = new Team("Poland")
+        def awayTeam = new Team("Germany")
+
+        when:
+        def result = gameValidator.checkGameExists(homeTeam, awayTeam)
+
+        then:
+        result
+    }
+
+    def "should return false when game not exist"() {
+        given:
+        def homeTeam = new Team("Poland")
+        def awayTeam = new Team("Germany")
+
+        when:
+        def result = gameValidator.checkGameExists(homeTeam, awayTeam)
 
         then:
         !result
