@@ -14,12 +14,11 @@ class GameDaoSpec extends Specification {
         given:
         def homeTeam = new Team("Poland")
         def awayTeam = new Team("Germany")
-        def game = new Game(homeTeam, awayTeam)
 
         when:
         gameDao.create(homeTeam, awayTeam);
 
         then:
-        gameDao.games.contains(game)
+        gameDao.games.find {it.getHomeTeam() == (homeTeam) && it.getAwayTeam() == (awayTeam)}
     }
 }
