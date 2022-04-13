@@ -33,19 +33,18 @@ public class GameService {
 
     }
 
-    private void validateTeamIsAlreadyOnBoard(Team homeTeam, Team awayTeam) {
-        if (gameValidator.test(homeTeam)) {
-            throw new IllegalStateException("Team is already on board: " + homeTeam.getName());
-        } else if (gameValidator.test(awayTeam)) {
-            throw new IllegalStateException("Team is already on board: " + awayTeam.getName());
-        }
-    }
-
     private void validateTeamsNames(String homeTeamName, String awayTeamName) {
         if (!teamValidator.test(homeTeamName)) {
             throw new IllegalArgumentException("Illegal home team name given: " + homeTeamName);
         } else if (!teamValidator.test(awayTeamName)) {
             throw new IllegalArgumentException("Illegal away team name given: " + awayTeamName);
+        }
+    }
+    private void validateTeamIsAlreadyOnBoard(Team homeTeam, Team awayTeam) {
+        if (gameValidator.test(homeTeam)) {
+            throw new IllegalStateException("Team is already on board: " + homeTeam.getName());
+        } else if (gameValidator.test(awayTeam)) {
+            throw new IllegalStateException("Team is already on board: " + awayTeam.getName());
         }
     }
 }

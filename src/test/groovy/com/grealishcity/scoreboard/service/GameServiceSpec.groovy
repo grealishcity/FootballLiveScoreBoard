@@ -107,7 +107,8 @@ class GameServiceSpec extends Specification {
         gameService.finish(homeTeamName, awayTeamName)
 
         then:
-        noExceptionThrown()
+        2 * teamValidator.test(_ as String) >> true
+        1 * gameDao.finish(new Team(homeTeamName), new Team(awayTeamName))
     }
 
 //    def "should throw exception when game not exists"() {
