@@ -17,8 +17,6 @@ public class GameService {
         Team homeTeam = new Team(homeTeamName);
         Team awayTeam = new Team(awayTeamName);
 
-        //TODO: Invoke gameDao create method
-
-
+        gameDao.create(homeTeam, awayTeam);
     }
 }
