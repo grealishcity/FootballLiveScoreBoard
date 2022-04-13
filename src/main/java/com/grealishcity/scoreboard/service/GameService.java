@@ -31,7 +31,12 @@ public class GameService {
 
     public void finish(String homeTeamName, String awayTeamName) {
         validateTeamsNames(homeTeamName, awayTeamName);
-        gameDao.finish(new Team(homeTeamName), new Team(awayTeamName));
+
+        Team homeTeam = new Team(homeTeamName);
+        Team awayTeam = new Team(awayTeamName);
+
+        gameValidator.checkGameExists(homeTeam, awayTeam);
+        gameDao.finish(homeTeam, awayTeam);
     }
 
     private void validateTeamsNames(String homeTeamName, String awayTeamName) {

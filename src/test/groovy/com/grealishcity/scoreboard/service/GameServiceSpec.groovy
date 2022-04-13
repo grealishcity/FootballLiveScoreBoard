@@ -108,6 +108,15 @@ class GameServiceSpec extends Specification {
 
         then:
         2 * teamValidator.test(_ as String) >> true
+        1 * gameValidator.checkGameExists(_ as Team, _ as Team) >> { args ->
+            def homeTeam = args[0] as Team
+            def awayTeam = args[1] as Team
+
+            assert homeTeam.name == homeTeamName
+            assert homeTeam.currentNumberOfGoals == 0
+            assert awayTeam.name == awayTeamName
+            assert awayTeam.currentNumberOfGoals == 0
+        } >> true
         1 * gameDao.finish(_ as Team, _ as Team) >> { args ->
             def homeTeam = args[0] as Team
             def awayTeam = args[1] as Team
