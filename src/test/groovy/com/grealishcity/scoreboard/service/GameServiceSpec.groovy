@@ -45,7 +45,7 @@ class GameServiceSpec extends Specification {
         then:
         1 * teamValidator.test(homeTeamName) >> false
         def e = thrown(IllegalArgumentException)
-        e.message == "Illegal team name given"
+        e.message == "Illegal home team name given: " + homeTeamName
     }
 
     def "should throw exception when given away team is not correct"() {
@@ -60,6 +60,6 @@ class GameServiceSpec extends Specification {
         1 * teamValidator.test(homeTeamName) >> true
         1 * teamValidator.test(awayTeamName) >> false
         def e = thrown(IllegalArgumentException)
-        e.message == "Illegal team name given"
+        e.message == "Illegal away team name given: " + awayTeamName
     }
 }

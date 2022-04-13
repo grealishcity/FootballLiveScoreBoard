@@ -16,10 +16,19 @@ public class GameService {
 
     public void create(String homeTeamName, String awayTeamName) {
         //TODO: Teams validation, game validation
+        validateTeams(homeTeamName, awayTeamName);
 
         Team homeTeam = new Team(homeTeamName);
         Team awayTeam = new Team(awayTeamName);
 
         gameDao.create(homeTeam, awayTeam);
+    }
+
+    private void validateTeams(String homeTeamName, String awayTeamName) {
+        if (!teamValidator.test(homeTeamName)) {
+            throw new IllegalArgumentException("Illegal home team name given: " + homeTeamName);
+        } else if (!teamValidator.test(awayTeamName)) {
+            throw new IllegalArgumentException("Illegal away team name given: " + awayTeamName);
+        }
     }
 }
