@@ -89,6 +89,6 @@ class GameDaoSpec extends Specification {
         gameDao.update(updatedHomeTeam, updatedAwayTeam)
 
         then:
-        gameDao.games.find {it.getHomeTeam() == updatedHomeTeam && it.getAwayTeam() == updatedAwayTeam }
+        gameDao.games.find { it.getHomeTeam() == (updatedHomeTeam) && it.getAwayTeam() == (updatedAwayTeam)}
     }
 }
