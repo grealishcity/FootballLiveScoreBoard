@@ -1,6 +1,6 @@
 package com.grealishcity.scoreboard.dao
 
-
+import com.grealishcity.scoreboard.exception.ObjectNotFoundException
 import com.grealishcity.scoreboard.model.Team
 import spock.lang.Specification
 import spock.lang.Subject
@@ -36,5 +36,18 @@ class GameDaoSpec extends Specification {
         then:
         gameDao.games.isEmpty()
         !gameDao.games.find {it.getHomeTeam() == (homeTeam) && it.getAwayTeam() == (awayTeam)}
+    }
+
+    def "should throw exception when game not exists"() {
+        given:
+        def homeTeam = new Team("Poland")
+        def awayTeam = new Team("Germany")
+
+        when:
+        gameDao.finish(homeTeam, awayTeam)
+
+        then:
+        def e = thrown(ObjectNotFoundException)
+        e.message == "Game not found"
     }
 }
