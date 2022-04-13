@@ -1,8 +1,15 @@
 package com.grealishcity.scoreboard.service;
 
+import com.grealishcity.scoreboard.dao.GameDao;
 import com.grealishcity.scoreboard.model.Team;
 
 public class GameService {
+
+    private GameDao gameDao;
+
+    public GameService(GameDao gameDao) {
+        this.gameDao = gameDao;
+    }
 
     public void create(String homeTeamName, String awayTeamName) {
         //TODO: Teams validation, game validation
