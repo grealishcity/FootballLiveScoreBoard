@@ -17,6 +17,6 @@ class GameServiceSpec extends Specification {
         gameService.create(homeTeam, awayTeam)
 
         then:
-        assert 1 == 1
+        noExceptionThrown()
     }
 }
