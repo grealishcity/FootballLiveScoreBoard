@@ -30,7 +30,8 @@ public class GameService {
     }
 
     public void finish(String homeTeamName, String awayTeamName) {
-
+        validateTeamsNames(homeTeamName, awayTeamName);
+        gameDao.finish(new Team(homeTeamName), new Team(awayTeamName));
     }
 
     private void validateTeamsNames(String homeTeamName, String awayTeamName) {
