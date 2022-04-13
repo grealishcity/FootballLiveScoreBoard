@@ -19,6 +19,7 @@ class GameDaoSpec extends Specification {
         gameDao.create(homeTeam, awayTeam);
 
         then:
+        gameDao.games.size() > 0
         gameDao.games.find {it.getHomeTeam() == (homeTeam) && it.getAwayTeam() == (awayTeam)}
     }
 }
