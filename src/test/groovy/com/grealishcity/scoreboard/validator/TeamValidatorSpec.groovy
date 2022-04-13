@@ -13,9 +13,9 @@ class TeamValidatorSpec extends Specification {
         def teamName = "test"
 
         when:
-        teamValidator.validate(teamName);
+        def result = teamValidator.validate(teamName);
 
         then:
-        noExceptionThrown()
+        result
     }
 }
