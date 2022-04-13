@@ -77,4 +77,12 @@ class GameDaoSpec extends Specification {
         then:
         gameDao.games.find { it.getHomeTeam() == updatedHomeTeam && it.getAwayTeam() == updatedAwayTeam }
     }
+
+    def "should return summary od games by total score"() {
+        when:
+        gameDao.getSummaryByTotalScore()
+
+        then:
+        noExceptionThrown()
+    }
 }
