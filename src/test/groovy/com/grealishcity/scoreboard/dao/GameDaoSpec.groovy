@@ -27,7 +27,7 @@ class GameDaoSpec extends Specification {
 
         then:
         !gameDao.games.isEmpty()
-        gameDao.games.find {it.getHomeTeam() == (homeTeam) && it.getAwayTeam() == (awayTeam)}
+        gameDao.games.find {it.getHomeTeam() == homeTeam && it.getAwayTeam() == awayTeam }
     }
 
     def "should remove game from list"() {
@@ -42,7 +42,7 @@ class GameDaoSpec extends Specification {
 
         then:
         gameDao.games.isEmpty()
-        !gameDao.games.find {it.getHomeTeam() == (homeTeam) && it.getAwayTeam() == (awayTeam)}
+        !gameDao.games.find {it.getHomeTeam() == homeTeam && it.getAwayTeam() == awayTeam }
     }
 
     def "should throw exception when game not exists"() {
@@ -72,5 +72,23 @@ class GameDaoSpec extends Specification {
         then:
         def e = thrown(EmptyListException)
         e.message == "Game list is empty. Can't remove game from empty list."
+    }
+
+    def "should update game score"() {
+        given:
+        def homeTeamName = "Poland"
+        def awayTeamName = "Germany"
+        def homeTeam = new Team(homeTeamName)
+        def awayTeam = new Team(awayTeamName)
+        def updatedHomeTeam = new Team(homeTeamName, 5)
+        def updatedAwayTeam = new Team(awayTeamName, 3)
+
+        gameDao.create(homeTeam, awayTeam);
+
+        when:
+        gameDao.update(updatedHomeTeam, updatedAwayTeam)
+
+        then:
+        gameDao.games.find {it.getHomeTeam() == updatedHomeTeam && it.getAwayTeam() == updatedAwayTeam }
     }
 }
