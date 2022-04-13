@@ -9,4 +9,12 @@ public class Team {
         this.name = name;
         this.currentNumberOfGoals = 0;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public Integer getCurrentNumberOfGoals() {
+        return currentNumberOfGoals;
+    }
 }

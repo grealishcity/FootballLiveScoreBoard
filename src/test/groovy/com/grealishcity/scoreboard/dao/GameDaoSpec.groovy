@@ -1,5 +1,6 @@
 package com.grealishcity.scoreboard.dao
 
+import com.grealishcity.scoreboard.model.Game
 import com.grealishcity.scoreboard.model.Team
 import spock.lang.Specification
 import spock.lang.Subject
