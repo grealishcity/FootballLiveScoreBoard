@@ -13,7 +13,7 @@ class TeamValidatorSpec extends Specification {
         def teamName = "test"
 
         when:
-        def result = teamValidator.validate(teamName);
+        def result = teamValidator.test(teamName);
 
         then:
         result

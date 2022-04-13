@@ -1,7 +1,11 @@
 package com.grealishcity.scoreboard.validator;
 
-public class TeamValidator {
+import java.util.function.Predicate;
 
+public class TeamValidator implements Predicate<String> {
 
-
+    @Override
+    public boolean test(String teamName) {
+        return false;
+    }
 }
