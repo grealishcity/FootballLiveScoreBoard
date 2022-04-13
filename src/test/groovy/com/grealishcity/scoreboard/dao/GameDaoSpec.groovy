@@ -50,4 +50,17 @@ class GameDaoSpec extends Specification {
         def e = thrown(ObjectNotFoundException)
         e.message == "Game not found"
     }
+
+    def "should throw exception when game list is empty"() {
+        given:
+        def homeTeam = new Team("Poland")
+        def awayTeam = new Team("Germany")
+
+        when:
+        gameDao.finish(homeTeam, awayTeam)
+
+        then:
+        def e = thrown(EmptyGameListException)
+        e.message == "Game list is empty"
+    }
 }
