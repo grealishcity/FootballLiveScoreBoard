@@ -10,10 +10,13 @@ class GameServiceSpec extends Specification {
 
     def "should create a new game"() {
         given:
+        def homeTeam = "Poland"
+        def awayTeam = "Germany"
 
         when:
+        gameService.create(homeTeam, awayTeam)
 
         then:
-
+        assert 1 == 1
     }
 }
