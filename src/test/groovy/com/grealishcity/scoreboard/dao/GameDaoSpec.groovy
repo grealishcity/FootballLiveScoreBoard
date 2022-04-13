@@ -58,7 +58,7 @@ class GameDaoSpec extends Specification {
 
         then:
         def e = thrown(ObjectNotFoundException)
-        e.message == "Game not found for given home team: " + notExistingTeam + " and away team: " + notExistingTeam
+        e.message == "Game not found for given home team: " + notExistingTeam.getName() + " and away team: " + notExistingTeam.getName()
     }
 
     def "should throw exception when game list is empty"() {
@@ -89,6 +89,6 @@ class GameDaoSpec extends Specification {
         gameDao.update(updatedHomeTeam, updatedAwayTeam)
 
         then:
-        gameDao.games.find { it.getHomeTeam() == (updatedHomeTeam) && it.getAwayTeam() == (updatedAwayTeam)}
+        gameDao.games.find { it.getHomeTeam() == updatedHomeTeam && it.getAwayTeam() == updatedAwayTeam }
     }
 }
