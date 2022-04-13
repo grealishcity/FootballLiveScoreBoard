@@ -78,7 +78,7 @@ class GameDaoSpec extends Specification {
         gameDao.games.find { it.getHomeTeam() == updatedHomeTeam && it.getAwayTeam() == updatedAwayTeam }
     }
 
-    def "should return summary od games by total score"() {
+    def "should return summary of games by total score"() {
         given:
         def homeTeamsNames = ["Poland", "Portugal", "Austria"]
         def awayTeamsNames = ["Germany", "Russia", "France"]
@@ -94,6 +94,31 @@ class GameDaoSpec extends Specification {
         ]
 
         createGamesAndUpdate(homeTeams, awayTeams)
+
+        when:
+        def gamesByTotalScore = gameDao.getSummaryByTotalScore()
+
+        then:
+        noExceptionThrown()
+    }
+
+    def "should sort games by creation date when number of goals is equal"() {
+        given:
+        def firstHomeTeam = new Team("Poland")
+        def secondHomeTeam = new Team("Germany")
+        def firstAwayTeam = new Team("Portugal")
+        def secondAwayTeam = new Team("Austria")
+
+        gameDao.create(firstHomeTeam, firstAwayTeam)
+        gameDao.create(secondHomeTeam, secondAwayTeam)
+
+        firstHomeTeam.currentNumberOfGoals = 10
+        firstAwayTeam.currentNumberOfGoals = 5
+        secondHomeTeam.currentNumberOfGoals = 5
+        secondAwayTeam.currentNumberOfGoals = 10
+
+        gameDao.update(firstHomeTeam, firstAwayTeam)
+        gameDao.update(secondHomeTeam, secondAwayTeam)
 
         when:
         def gamesByTotalScore = gameDao.getSummaryByTotalScore()
