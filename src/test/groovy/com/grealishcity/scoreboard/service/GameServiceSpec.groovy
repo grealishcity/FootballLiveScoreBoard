@@ -20,6 +20,7 @@ class GameServiceSpec extends Specification {
         gameService.create(homeTeam, awayTeam)
 
         then:
+        1 * gameDao.create(homeTeam, awayTeam)
         noExceptionThrown()
     }
 }
