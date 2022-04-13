@@ -3,7 +3,6 @@ package com.grealishcity.scoreboard.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.grealishcity.scoreboard.exception.EmptyListException;
 import com.grealishcity.scoreboard.exception.ObjectNotFoundException;
 import com.grealishcity.scoreboard.model.Game;
 import com.grealishcity.scoreboard.model.Team;
@@ -21,10 +20,6 @@ public class GameDao {
     }
 
     public void finish(Team homeTeam, Team awayTeam) {
-        if (games.isEmpty()) {
-            throw new EmptyListException("Game list is empty. Can't remove game from empty list.");
-        }
-
         games.remove(findGameByHomeTeamAndAwayTeam(homeTeam, awayTeam));
     }
 
