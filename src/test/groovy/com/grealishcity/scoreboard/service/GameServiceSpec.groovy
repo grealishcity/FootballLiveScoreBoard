@@ -14,7 +14,7 @@ class GameServiceSpec extends Specification {
     def gameValidator = Mock(GameValidator)
 
     @Subject
-    def gameService = new GameService(gameDao, teamValidator)
+    def gameService = new GameService(gameDao, teamValidator, gameValidator)
 
     def "should create a new game"() {
         given:
@@ -35,7 +35,7 @@ class GameServiceSpec extends Specification {
             assert awayTeam.name == awayTeamName
             assert awayTeam.currentNumberOfGoals == 0
         }
-        2 * gameValidator.test(_ as Team) >> true
+        2 * gameValidator.test(_ as Team) >> false
     }
 
     def "should throw exception when given home team is not correct"() {
@@ -65,5 +65,36 @@ class GameServiceSpec extends Specification {
         1 * teamValidator.test(awayTeamName) >> false
         def e = thrown(IllegalArgumentException)
         e.message == "Illegal away team name given: " + awayTeamName
+    }
+
+    def "should throw exception when home team is already on board"() {
+        given:
+        def homeTeamName = "Poland"
+        def awayTeamName = "Germany"
+
+        when:
+        gameService.create(homeTeamName, awayTeamName)
+
+        then:
+        2 * teamValidator.test(_ as String) >> true
+        1 * gameValidator.test(_ as Team) >> true
+        def e = thrown(IllegalStateException)
+        e.message == "Team is already on board: " + homeTeamName
+    }
+
+    def "should throw exception when away team is already on board"() {
+        given:
+        def homeTeamName = "Poland"
+        def awayTeamName = "Germany"
+
+        when:
+        gameService.create(homeTeamName, awayTeamName)
+
+        then:
+        2 * teamValidator.test(_ as String) >> true
+        1 * gameValidator.test(_ as Team) >> false
+        1 * gameValidator.test(_ as Team) >> true
+        def e = thrown(IllegalStateException)
+        e.message == "Team is already on board: " + awayTeamName
     }
 }
