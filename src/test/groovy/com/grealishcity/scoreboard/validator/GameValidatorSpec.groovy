@@ -1,13 +1,16 @@
 package com.grealishcity.scoreboard.validator
 
+import com.grealishcity.scoreboard.dao.GameDao
 import com.grealishcity.scoreboard.model.Team
 import spock.lang.Specification
 import spock.lang.Subject
 
 class GameValidatorSpec extends Specification {
 
+    def gameDao = Mock(GameDao)
+
     @Subject
-    def gameValidator = new GameValidator()
+    def gameValidator = new GameValidator(gameDao)
 
     def "should return true when game not exists"() {
         given:

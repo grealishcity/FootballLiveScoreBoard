@@ -1,11 +1,11 @@
 package com.grealishcity.scoreboard.validator;
 
-import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 
 import com.grealishcity.scoreboard.dao.GameDao;
 import com.grealishcity.scoreboard.model.Team;
 
-public class GameValidator implements BiPredicate<Team, Team> {
+public class GameValidator implements Predicate<Team> {
 
     private final GameDao gameDao;
 
@@ -14,9 +14,13 @@ public class GameValidator implements BiPredicate<Team, Team> {
     }
 
     @Override
-    public boolean test(Team homeTeamName, Team awayTeamName) {
-        gameDao.getGames().stream()
-                .filter(game -> game.getHomeTeam().equals(homeTeamName))
-        return true;
+    public boolean test(Team team) {
+        return checkTeamIsAlreadyOnBoard(team);
+    }
+
+
+    private boolean checkTeamIsAlreadyOnBoard(Team teamName) {
+        return gameDao.getGames().stream()
+                .anyMatch(game -> game.getHomeTeam().equals(teamName) || game.getAwayTeam().equals(teamName));
     }
 }
