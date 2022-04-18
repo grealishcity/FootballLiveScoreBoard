@@ -49,6 +49,7 @@ class UserServiceSpec extends Specification {
         def teams = userService.getTeams()
 
         then:
+        2 * teamValidator.test(_ as String) >> true
         teams.get(0).name == homeTeamName && teams.get(1).name == awayTeamName
     }
 
@@ -94,6 +95,7 @@ class UserServiceSpec extends Specification {
         def teams = userService.getTeamsWithGoals()
 
         then:
+        2 * teamValidator.test(_ as String) >> true
         teams.get(0).name == homeTeamName && teams.get(0).getCurrentNumberOfGoals() == Integer.valueOf(homeTeamGoals)
         teams.get(1).name == awayTeamName && teams.get(1).getCurrentNumberOfGoals() == Integer.valueOf(awayTeamGoals)
     }
