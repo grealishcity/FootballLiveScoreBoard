@@ -52,6 +52,30 @@ class UserServiceSpec extends Specification {
         teams.get(0).name == homeTeamName && teams.get(1).name == awayTeamName
     }
 
+    @Unroll
+    def "should throw exception when home team name #desc"() {
+        given:
+        def expectedExceptionMessage = "Invalid team name given"
+        def scanner = new Scanner(teamName + "\n" + teamName)
+        userService = new UserService(scanner, teamValidator)
+
+        when:
+        def teams = userService.getTeams()
+
+        then:
+        def e = thrown(IllegalArgumentException)
+        e.message == expectedExceptionMessage
+
+        where:
+        desc                     | teamName
+        'is null'                | null
+        'is empty'               | ""
+        'has digits'             | "321"
+        'has invalid characters' | "!@#%"
+        'is too short'           | "aa"
+//        'is too long'            | TEAM_NAME_WITH_TOO_MANY_CHARACTERS
+    }
+
     def "should return teams with goals"() {
         given:
         def homeTeamGoals = "5"
