@@ -20,7 +20,7 @@ public class GameService {
 
     public void create(List<Team> teams) {
         Team homeTeam = teams.get(0);
-        Team awayTeam = teams.get(0);
+        Team awayTeam = teams.get(1);
 
         if (gameValidator.checkTeamIsAlreadyOnBoard(homeTeam)) {
             throw new IllegalStateException("Given home team: " + homeTeam.getName() + " is already on board!");

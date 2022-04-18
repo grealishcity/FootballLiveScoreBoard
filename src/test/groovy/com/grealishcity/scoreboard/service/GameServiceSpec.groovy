@@ -4,53 +4,65 @@ import com.grealishcity.scoreboard.dao.GameDao
 import com.grealishcity.scoreboard.exception.ObjectNotFoundException
 import com.grealishcity.scoreboard.model.Team
 import com.grealishcity.scoreboard.validator.GameValidator
-import com.grealishcity.scoreboard.validator.TeamValidator
 import spock.lang.Specification
 import spock.lang.Subject
 
 class GameServiceSpec extends Specification {
 
     def gameDao = Mock(GameDao)
-    def teamValidator = Mock(TeamValidator)
     def gameValidator = Mock(GameValidator)
 
     @Subject
-    def gameService = new GameService(gameDao, teamValidator, gameValidator)
+    def gameService = new GameService(gameDao, gameValidator)
 
     def "should create a new game"() {
         given:
         def homeTeamName = "Poland"
         def awayTeamName = "Germany"
+        def homeTeam = new Team(homeTeamName)
+        def awayTeam = new Team(awayTeamName)
 
         when:
-        gameService.create(homeTeamName, awayTeamName)
+        gameService.create([homeTeam, awayTeam])
 
         then:
-        2 * teamValidator.test(_ as String) >> true
-        1 * gameDao.create(_ as Team, _ as Team) >> { args ->
-            def homeTeam = args[0] as Team
-            def awayTeam = args[1] as Team
-
-            assert homeTeam.name == homeTeamName
-            assert homeTeam.currentNumberOfGoals == 0
-            assert awayTeam.name == awayTeamName
-            assert awayTeam.currentNumberOfGoals == 0
-        }
-        2 * gameValidator.test(_ as Team) >> false
+        2 * gameValidator.checkTeamIsAlreadyOnBoard(_ as Team) >> false
+        1 * gameDao.create(homeTeam, awayTeam)
     }
 
-    def "should throw exception when given home team is not correct"() {
+    def "should throw exception when given home team is already on board"() {
         given:
-        def homeTeamName = "aa"
+        def homeTeamName = "Poland"
         def awayTeamName = "Germany"
+        def homeTeam = new Team(homeTeamName)
+        def awayTeam = new Team(awayTeamName)
+        def expectedExceptionMessage = "Given home team: " + homeTeamName + " is already on board!"
 
         when:
-        gameService.create(homeTeamName, awayTeamName)
+        gameService.create([homeTeam, awayTeam])
 
         then:
-        1 * teamValidator.test(homeTeamName) >> false
-        def e = thrown(IllegalArgumentException)
-        e.message == "Illegal home team name given: " + homeTeamName
+        1 * gameValidator.checkTeamIsAlreadyOnBoard(homeTeam) >> true
+        def e = thrown(IllegalStateException)
+        e.message == expectedExceptionMessage
+    }
+
+    def "should throw exception when given away team is already on board"() {
+        given:
+        def homeTeamName = "Poland"
+        def awayTeamName = "Germany"
+        def homeTeam = new Team(homeTeamName)
+        def awayTeam = new Team(awayTeamName)
+        def expectedExceptionMessage = "Given away team: " + awayTeamName + " is already on board!"
+
+        when:
+        gameService.create([homeTeam, awayTeam])
+
+        then:
+        1 * gameValidator.checkTeamIsAlreadyOnBoard(homeTeam) >> false
+        1 * gameValidator.checkTeamIsAlreadyOnBoard(awayTeam) >> true
+        def e = thrown(IllegalStateException)
+        e.message == expectedExceptionMessage
     }
 
     def "should throw exception when given away team is not correct"() {
