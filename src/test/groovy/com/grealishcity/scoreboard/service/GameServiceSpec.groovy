@@ -84,36 +84,25 @@ class GameServiceSpec extends Specification {
     }
 
     def "should update game score"() {
-        given:
-        def homeTeamName = "Poland"
-        def awayTeamName = "Germany"
-        def homeTeamGoals = 5
-        def awayTeamGoals = 4
-        def givenHomeTeam = new Team(homeTeamName, homeTeamGoals)
-        def givenAwayTeam = new Team(awayTeamName, awayTeamGoals)
-
         when:
-        gameService.update(givenHomeTeam, givenAwayTeam)
+        gameService.update([homeTeam, awayTeam])
 
         then:
-        1 * gameValidator.checkGameExists(_ as Team, _ as Team) >> { args ->
-            def homeTeam = args[0] as Team
-            def awayTeam = args[1] as Team
+        1 * gameValidator.checkGameExists(homeTeam, awayTeam) >> true
+        1 * gameDao.update(homeTeam, awayTeam)
+    }
 
-            assert homeTeam.name == homeTeamName
-            assert homeTeam.currentNumberOfGoals == 5
-            assert awayTeam.name == awayTeamName
-            assert awayTeam.currentNumberOfGoals == 4
-        } >> true
-        1 * gameDao.update(_ as Team, _ as Team) >> { args ->
-            def homeTeam = args[0] as Team
-            def awayTeam = args[1] as Team
+    def "should throw exception when game not exists - update"() {
+        given:
+        def expectedExceptionMessage = "Game not found for given home team: " + homeTeam.getName() + " and away team: " + awayTeam.getName()
 
-            assert homeTeam.name == homeTeamName
-            assert homeTeam.currentNumberOfGoals == 5
-            assert awayTeam.name == awayTeamName
-            assert awayTeam.currentNumberOfGoals == 4
-        }
+        when:
+        gameService.update([homeTeam, awayTeam])
+
+        then:
+        1 * gameValidator.checkGameExists(homeTeam, awayTeam) >> false
+        def e = thrown(ObjectNotFoundException)
+        e.message == expectedExceptionMessage
     }
 
     def "should call game dao to get summary by total score"() {
