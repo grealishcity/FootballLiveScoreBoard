@@ -35,7 +35,7 @@ public class GameService {
 
     public void finish(List<Team> teams) {
         Team homeTeam = teams.get(0);
-        Team awayTeam = teams.get(0);
+        Team awayTeam = teams.get(1);
 
         if (!gameValidator.checkGameExists(homeTeam, awayTeam)) {
             throw new ObjectNotFoundException("Game not found for given home team: " + homeTeam.getName() + " and away team: " + awayTeam.getName());

@@ -4,10 +4,20 @@ import com.grealishcity.scoreboard.dao.GameDao
 import com.grealishcity.scoreboard.exception.ObjectNotFoundException
 import com.grealishcity.scoreboard.model.Team
 import com.grealishcity.scoreboard.validator.GameValidator
+import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject
 
 class GameServiceSpec extends Specification {
+
+    @Shared
+    def homeTeamName = "Poland"
+    @Shared
+    def awayTeamName = "Germany"
+    @Shared
+    def homeTeam = new Team(homeTeamName)
+    @Shared
+    def awayTeam = new Team(awayTeamName)
 
     def gameDao = Mock(GameDao)
     def gameValidator = Mock(GameValidator)
@@ -16,12 +26,6 @@ class GameServiceSpec extends Specification {
     def gameService = new GameService(gameDao, gameValidator)
 
     def "should create a new game"() {
-        given:
-        def homeTeamName = "Poland"
-        def awayTeamName = "Germany"
-        def homeTeam = new Team(homeTeamName)
-        def awayTeam = new Team(awayTeamName)
-
         when:
         gameService.create([homeTeam, awayTeam])
 
@@ -32,10 +36,6 @@ class GameServiceSpec extends Specification {
 
     def "should throw exception when given home team is already on board"() {
         given:
-        def homeTeamName = "Poland"
-        def awayTeamName = "Germany"
-        def homeTeam = new Team(homeTeamName)
-        def awayTeam = new Team(awayTeamName)
         def expectedExceptionMessage = "Given home team: " + homeTeamName + " is already on board!"
 
         when:
@@ -49,10 +49,6 @@ class GameServiceSpec extends Specification {
 
     def "should throw exception when given away team is already on board"() {
         given:
-        def homeTeamName = "Poland"
-        def awayTeamName = "Germany"
-        def homeTeam = new Team(homeTeamName)
-        def awayTeam = new Team(awayTeamName)
         def expectedExceptionMessage = "Given away team: " + awayTeamName + " is already on board!"
 
         when:
@@ -65,103 +61,26 @@ class GameServiceSpec extends Specification {
         e.message == expectedExceptionMessage
     }
 
-    def "should throw exception when given away team is not correct"() {
-        given:
-        def homeTeamName = "Poland"
-        def awayTeamName = "aa"
-
-        when:
-        gameService.create(homeTeamName, awayTeamName)
-
-        then:
-        1 * teamValidator.test(homeTeamName) >> true
-        1 * teamValidator.test(awayTeamName) >> false
-        def e = thrown(IllegalArgumentException)
-        e.message == "Illegal away team name given: " + awayTeamName
-    }
-
-    def "should throw exception when home team is already on board"() {
-        given:
-        def homeTeamName = "Poland"
-        def awayTeamName = "Germany"
-
-        when:
-        gameService.create(homeTeamName, awayTeamName)
-
-        then:
-        2 * teamValidator.test(_ as String) >> true
-        1 * gameValidator.test(_ as Team) >> true
-        def e = thrown(IllegalStateException)
-        e.message == "Team is already on board: " + homeTeamName
-    }
-
-    def "should throw exception when away team is already on board"() {
-        given:
-        def homeTeamName = "Poland"
-        def awayTeamName = "Germany"
-
-        when:
-        gameService.create(homeTeamName, awayTeamName)
-
-        then:
-        2 * teamValidator.test(_ as String) >> true
-        1 * gameValidator.test(_ as Team) >> false
-        1 * gameValidator.test(_ as Team) >> true
-        def e = thrown(IllegalStateException)
-        e.message == "Team is already on board: " + awayTeamName
-    }
-
     def "should finish game"() {
-        given:
-        def homeTeamName = "Poland"
-        def awayTeamName = "Germany"
-
         when:
-        gameService.finish(homeTeamName, awayTeamName)
+        gameService.finish([homeTeam, awayTeam])
 
         then:
-        2 * teamValidator.test(_ as String) >> true
-        1 * gameValidator.checkGameExists(_ as Team, _ as Team) >> { args ->
-            def homeTeam = args[0] as Team
-            def awayTeam = args[1] as Team
-
-            assert homeTeam.name == homeTeamName
-            assert homeTeam.currentNumberOfGoals == 0
-            assert awayTeam.name == awayTeamName
-            assert awayTeam.currentNumberOfGoals == 0
-            true
-        }
-        1 * gameDao.finish(_ as Team, _ as Team) >> { args ->
-            def homeTeam = args[0] as Team
-            def awayTeam = args[1] as Team
-
-            assert homeTeam.name == homeTeamName
-            assert homeTeam.currentNumberOfGoals == 0
-            assert awayTeam.name == awayTeamName
-            assert awayTeam.currentNumberOfGoals == 0
-        }
+        1 * gameValidator.checkGameExists(homeTeam, awayTeam) >> true
+        1 * gameDao.finish(homeTeam, awayTeam)
     }
 
     def "should throw exception when game not exists"() {
         given:
-        def notExistingTeam = "Poland"
+        def expectedExceptionMessage = "Game not found for given home team: " + homeTeam.getName() + " and away team: " + awayTeam.getName()
 
         when:
-        gameService.finish(notExistingTeam, notExistingTeam)
+        gameService.finish([homeTeam, awayTeam])
 
         then:
-        2 * teamValidator.test(_ as String) >> true
-        1 * gameValidator.checkGameExists(_ as Team, _ as Team) >> { args ->
-            def homeTeam = args[0] as Team
-            def awayTeam = args[1] as Team
-
-            assert homeTeam.name == notExistingTeam
-            assert homeTeam.currentNumberOfGoals == 0
-            assert awayTeam.name == notExistingTeam
-            assert awayTeam.currentNumberOfGoals == 0
-        }
+        1 * gameValidator.checkGameExists(homeTeam, awayTeam) >> false
         def e = thrown(ObjectNotFoundException)
-        e.message == "Game not found for given home team: " + notExistingTeam + " and away team: " + notExistingTeam
+        e.message == expectedExceptionMessage
     }
 
     def "should update game score"() {
