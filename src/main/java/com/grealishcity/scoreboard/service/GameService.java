@@ -19,7 +19,6 @@ public class GameService {
     }
 
     public void create(List<Team> teams) {
-        //TODO check home team and away team is not the same team
         Team homeTeam = teams.get(0);
         Team awayTeam = teams.get(1);
 

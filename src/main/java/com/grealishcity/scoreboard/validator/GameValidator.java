@@ -18,7 +18,7 @@ public class GameValidator {
 
     public boolean checkGameExists(Team homeTeam, Team awayTeam) {
         return gameDao.getGames().stream()
-                .anyMatch(game -> game.getHomeTeam().equals(homeTeam) && game.getAwayTeam().equals(awayTeam));
+                .anyMatch(game -> game.getHomeTeam().getName().equals(homeTeam.getName()) && game.getAwayTeam().getName().equals(awayTeam.getName()));
     }
 
 }
