@@ -5,7 +5,7 @@ import java.util.Scanner;
 import com.grealishcity.scoreboard.dao.GameDao;
 import com.grealishcity.scoreboard.service.GameService;
 import com.grealishcity.scoreboard.service.UserService;
-import com.grealishcity.scoreboard.utils.Menu;
+import com.grealishcity.scoreboard.utils.Board;
 import com.grealishcity.scoreboard.validator.GameValidator;
 import com.grealishcity.scoreboard.validator.TeamValidator;
 
@@ -21,7 +21,7 @@ public class Main {
         int choice;
 
         while (true) {
-            Menu.display();
+            Board.displayMenu();
             choice = userService.getUserChoice();
 
             switch (choice) {
@@ -35,7 +35,7 @@ public class Main {
                     gameService.update(userService.getTeamsNames());
                     break;
                 case 4:
-                    gameService.getSummaryByTotalScore();
+                    Board.displaySummary(gameService.getSummaryByTotalScore());
                     break;
                 case 5:
                     System.exit(0);

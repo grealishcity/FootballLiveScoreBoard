@@ -25,7 +25,7 @@ public class GameService {
         validateTeamsNames(teamsNames.get(0), teamsNames.get(1));
 
         Team homeTeam = new Team(teamsNames.get(0));
-        Team awayTeam = new Team(teamsNames.get(0));
+        Team awayTeam = new Team(teamsNames.get(1));
 
         validateTeamIsAlreadyOnBoard(homeTeam, awayTeam);
 
@@ -36,7 +36,7 @@ public class GameService {
         validateTeamsNames(teamsNames.get(0), teamsNames.get(1));
 
         Team homeTeam = new Team(teamsNames.get(0));
-        Team awayTeam = new Team(teamsNames.get(0));
+        Team awayTeam = new Team(teamsNames.get(1));
 
         if (!gameValidator.checkGameExists(homeTeam, awayTeam)) {
             throw new ObjectNotFoundException("Game not found for given home team: " + teamsNames.get(0) + " and away team: " + teamsNames.get(1));
@@ -48,7 +48,7 @@ public class GameService {
         validateTeamsNames(teamsNames.get(0), teamsNames.get(1));
 
         Team homeTeam = new Team(teamsNames.get(0));
-        Team awayTeam = new Team(teamsNames.get(0));
+        Team awayTeam = new Team(teamsNames.get(1));
 
         gameValidator.checkGameExists(homeTeam, awayTeam);
         gameDao.update(homeTeam, awayTeam);
