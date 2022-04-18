@@ -2,14 +2,22 @@ package com.grealishcity.scoreboard;
 
 import java.util.Scanner;
 
+import com.grealishcity.scoreboard.dao.GameDao;
+import com.grealishcity.scoreboard.service.GameService;
 import com.grealishcity.scoreboard.service.UserService;
 import com.grealishcity.scoreboard.utils.Menu;
+import com.grealishcity.scoreboard.validator.GameValidator;
+import com.grealishcity.scoreboard.validator.TeamValidator;
 
 public class Main {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         UserService userService = new UserService(scanner);
+        GameDao gameDao = new GameDao();
+        TeamValidator teamValidator = new TeamValidator();
+        GameValidator gameValidator = new GameValidator(gameDao);
+        GameService gameService = new GameService(gameDao, teamValidator, gameValidator);
         int choice;
 
         while (true) {
@@ -18,16 +26,16 @@ public class Main {
 
             switch (choice) {
                 case 1:
-//                    gameService.create(userService.getTeamName(), userService.getTeamName());
+                    gameService.create(userService.getTeamsNames());
                     break;
                 case 2:
-//                    finishGame();
+                    gameService.finish(userService.getTeamsNames());
                     break;
                 case 3:
-//                    updateScore();
+                    gameService.update(userService.getTeamsNames());
                     break;
                 case 4:
-//                    getSummaryByTotalScore();
+                    gameService.
                     break;
                 case 5:
                     System.exit(0);

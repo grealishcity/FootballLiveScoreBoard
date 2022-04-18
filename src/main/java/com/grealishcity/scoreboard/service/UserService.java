@@ -25,7 +25,7 @@ public class UserService {
         return choice;
     }
 
-    public List<String> getTeamName() {
+    public List<String> getTeamsNames() {
         List<String> teamsNames = new ArrayList<>();
         System.out.print("Give home team name: ");
         teamsNames.add(scanner.nextLine());

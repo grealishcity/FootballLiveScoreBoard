@@ -1,5 +1,7 @@
 package com.grealishcity.scoreboard.service;
 
+import java.util.List;
+
 import com.grealishcity.scoreboard.dao.GameDao;
 import com.grealishcity.scoreboard.exception.ObjectNotFoundException;
 import com.grealishcity.scoreboard.model.Team;
@@ -18,30 +20,35 @@ public class GameService {
         this.gameValidator = gameValidator;
     }
 
-    public void create(String homeTeamName, String awayTeamName) {
-        validateTeamsNames(homeTeamName, awayTeamName);
+    public void create(List<String> teamsNames) {
+        validateTeamsNames(teamsNames.get(0), teamsNames.get(1));
 
-        Team homeTeam = new Team(homeTeamName);
-        Team awayTeam = new Team(awayTeamName);
+        Team homeTeam = new Team(teamsNames.get(0));
+        Team awayTeam = new Team(teamsNames.get(0));
 
         validateTeamIsAlreadyOnBoard(homeTeam, awayTeam);
 
         gameDao.create(homeTeam, awayTeam);
     }
 
-    public void finish(String homeTeamName, String awayTeamName) {
-        validateTeamsNames(homeTeamName, awayTeamName);
+    public void finish(List<String> teamsNames) {
+        validateTeamsNames(teamsNames.get(0), teamsNames.get(1));
 
-        Team homeTeam = new Team(homeTeamName);
-        Team awayTeam = new Team(awayTeamName);
+        Team homeTeam = new Team(teamsNames.get(0));
+        Team awayTeam = new Team(teamsNames.get(0));
 
         if (!gameValidator.checkGameExists(homeTeam, awayTeam)) {
-            throw new ObjectNotFoundException("Game not found for given home team: " + homeTeamName + " and away team: " + awayTeamName);
+            throw new ObjectNotFoundException("Game not found for given home team: " + teamsNames.get(0) + " and away team: " + teamsNames.get(1));
         }
         gameDao.finish(homeTeam, awayTeam);
     }
 
-    public void update(Team homeTeam, Team awayTeam) {
+    public void update(List<String> teamsNames) {
+        validateTeamsNames(teamsNames.get(0), teamsNames.get(1));
+
+        Team homeTeam = new Team(teamsNames.get(0));
+        Team awayTeam = new Team(teamsNames.get(0));
+
         gameValidator.checkGameExists(homeTeam, awayTeam);
         gameDao.update(homeTeam, awayTeam);
     }

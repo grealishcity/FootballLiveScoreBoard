@@ -36,7 +36,7 @@ class UserServiceSpec extends Specification {
         userService = new UserService(scanner)
 
         when:
-        def teams = userService.getTeamName()
+        def teams = userService.getTeamsNames()
 
         then:
         teams.containsAll([homeTeamName, awayTeamName])
