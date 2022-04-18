@@ -30,6 +30,3 @@ public class Board {
         );
     }
 }
-//
-//IntStream.range(0, list.size())
-//        .forEach(index -> System.out.println(String.format("[%d] : %s", index, list.get(index))));
