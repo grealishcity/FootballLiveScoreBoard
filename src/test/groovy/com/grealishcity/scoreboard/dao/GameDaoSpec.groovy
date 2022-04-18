@@ -104,30 +104,37 @@ class GameDaoSpec extends Specification {
         totalGameScoreList.get(0) >= totalGameScoreList.get(1) && totalGameScoreList.get(1) >= totalGameScoreList.get(2)
     }
 
-//    def "should sort games by creation date when number of goals is equal"() {
-//        given:
-//        def firstHomeTeam = new Team("Poland")
-//        def secondHomeTeam = new Team("Germany")
-//        def firstAwayTeam = new Team("Portugal")
-//        def secondAwayTeam = new Team("Austria")
-//
-//        gameDao.create(firstHomeTeam, firstAwayTeam)
-//        gameDao.create(secondHomeTeam, secondAwayTeam)
-//
-//        firstHomeTeam.currentNumberOfGoals = 10
-//        firstAwayTeam.currentNumberOfGoals = 5
-//        secondHomeTeam.currentNumberOfGoals = 5
-//        secondAwayTeam.currentNumberOfGoals = 10
-//
-//        gameDao.update(firstHomeTeam, firstAwayTeam)
-//        gameDao.update(secondHomeTeam, secondAwayTeam)
-//
-//        when:
-//        def gamesByTotalScore = gameDao.getSummaryByTotalScore()
-//
-//        then:
-//        noExceptionThrown()
-//    }
+    def "should sort games by creation date when number of goals is equal"() {
+        given:
+        def firstHomeTeam = new Team("Poland")
+        def firstAwayTeam = new Team("Portugal")
+        def secondHomeTeam = new Team("Germany")
+        def secondAwayTeam = new Team("Austria")
+        def homeTeamGoals = 10
+        def awayTeamGoals = 5
+
+        gameDao.create(secondHomeTeam, secondAwayTeam)
+        gameDao.create(firstHomeTeam, firstAwayTeam)
+
+        firstHomeTeam.currentNumberOfGoals = homeTeamGoals
+        firstAwayTeam.currentNumberOfGoals = awayTeamGoals
+        secondHomeTeam.currentNumberOfGoals = homeTeamGoals
+        secondAwayTeam.currentNumberOfGoals = awayTeamGoals
+
+        gameDao.update(firstHomeTeam, firstAwayTeam)
+        gameDao.update(secondHomeTeam, secondAwayTeam)
+
+        when:
+        def gamesByTotalScore = gameDao.getSummaryByTotalScore()
+        def totalGameScoreList = getTotalGameScoreList(gamesByTotalScore)
+        def firstGame = gamesByTotalScore.get(0)
+        def secondGame = gamesByTotalScore.get(1)
+
+        then:
+        totalGameScoreList.get(0) == totalGameScoreList.get(1)
+        firstGame.homeTeam == secondHomeTeam && firstGame.awayTeam == secondAwayTeam
+        secondGame.homeTeam == firstHomeTeam && secondGame.awayTeam == firstAwayTeam
+    }
 
     def createGames(homeTeams, awayTeams) {
         for (int i = 0; i < 3; i++) {
