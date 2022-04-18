@@ -2,6 +2,7 @@ package com.grealishcity.scoreboard;
 
 import java.util.Scanner;
 
+import com.grealishcity.scoreboard.service.UserService;
 import com.grealishcity.scoreboard.utils.Menu;
 
 public class Main {
@@ -12,28 +13,25 @@ public class Main {
 
         while (true) {
             Menu.display();
-            System.out.print("Choose an option: ");
-            choice = scanner.nextInt();
+            choice = new UserService(scanner).getUserChoice();
 
             switch (choice) {
                 case 1:
 //                    startGame();
-                    System.out.println(choice);
                     break;
                 case 2:
 //                    finishGame();
-                    System.out.println(choice);
                     break;
                 case 3:
 //                    updateScore();
-                    System.out.println(choice);
                     break;
                 case 4:
 //                    getSummaryByTotalScore();
-                    System.out.println(choice);
                     break;
                 case 5:
                     System.exit(0);
+                default:
+                    System.out.print("Incorrect choice. Please try again.\n\n");
             }
         }
     }
