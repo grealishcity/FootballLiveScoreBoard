@@ -7,12 +7,12 @@ import java.util.Scanner;
 import com.grealishcity.scoreboard.model.Team;
 import com.grealishcity.scoreboard.validator.TeamValidator;
 
-public class UserService {
+public class UserInputService {
 
     private final Scanner scanner;
     private final TeamValidator teamValidator;
 
-    public UserService(Scanner scanner, TeamValidator teamValidator) {
+    public UserInputService(Scanner scanner, TeamValidator teamValidator) {
         this.scanner = scanner;
         this.teamValidator = teamValidator;
     }

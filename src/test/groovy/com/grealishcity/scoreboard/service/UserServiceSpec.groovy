@@ -23,7 +23,7 @@ class UserServiceSpec extends Specification {
     def "should return #expected when input is #desc"() {
         given:
         def scanner = new Scanner(input)
-        userService = new UserService(scanner, teamValidator)
+        userService = new UserInputService(scanner, teamValidator)
 
         when:
         def result = userService.getUserChoice()
@@ -43,7 +43,7 @@ class UserServiceSpec extends Specification {
     def "should return teams"() {
         given:
         def scanner = new Scanner(homeTeamName + "\n" + awayTeamName)
-        userService = new UserService(scanner, teamValidator)
+        userService = new UserInputService(scanner, teamValidator)
 
         when:
         def teams = userService.getTeams()
@@ -57,7 +57,7 @@ class UserServiceSpec extends Specification {
         given:
         def expectedExceptionMessage = "Invalid home team name given: " + homeTeamName
         def scanner = new Scanner(homeTeamName + "\n" + awayTeamName)
-        userService = new UserService(scanner, teamValidator)
+        userService = new UserInputService(scanner, teamValidator)
 
         when:
         userService.getTeams()
@@ -72,7 +72,7 @@ class UserServiceSpec extends Specification {
         given:
         def expectedExceptionMessage = "Invalid away team name given: " + awayTeamName
         def scanner = new Scanner(homeTeamName + "\n" + awayTeamName)
-        userService = new UserService(scanner, teamValidator)
+        userService = new UserInputService(scanner, teamValidator)
 
         when:
         userService.getTeams()
@@ -89,7 +89,7 @@ class UserServiceSpec extends Specification {
         def homeTeamGoals = "5"
         def awayTeamGoals = "6"
         def scanner = new Scanner(homeTeamName + "\n" + awayTeamName + "\n" + homeTeamGoals + "\n" + awayTeamGoals)
-        userService = new UserService(scanner, teamValidator)
+        userService = new UserInputService(scanner, teamValidator)
 
         when:
         def teams = userService.getTeamsWithGoals()

@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 import com.grealishcity.scoreboard.dao.GameDao;
 import com.grealishcity.scoreboard.service.GameService;
-import com.grealishcity.scoreboard.service.UserService;
+import com.grealishcity.scoreboard.service.UserInputService;
 import com.grealishcity.scoreboard.utils.Board;
 import com.grealishcity.scoreboard.validator.GameValidator;
 import com.grealishcity.scoreboard.validator.TeamValidator;
@@ -14,7 +14,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         TeamValidator teamValidator = new TeamValidator();
-        UserService userService = new UserService(scanner, teamValidator);
+        UserInputService userService = new UserInputService(scanner, teamValidator);
         GameDao gameDao = new GameDao();
         GameValidator gameValidator = new GameValidator(gameDao);
         GameService gameService = new GameService(gameDao, gameValidator);
