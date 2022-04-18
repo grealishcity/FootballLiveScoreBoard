@@ -23,7 +23,7 @@ public class UserInputService {
         try {
             System.out.print("Choose an option: ");
             choice = Integer.parseInt(scanner.nextLine());
-            if (choice <= 0) {
+            if (choice < 0) {
                 choice = 0;
             }
         } catch (NumberFormatException e) {
