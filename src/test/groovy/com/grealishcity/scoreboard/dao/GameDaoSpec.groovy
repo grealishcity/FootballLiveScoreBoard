@@ -93,53 +93,80 @@ class GameDaoSpec extends Specification {
                 new Team(awayTeamsNames.get(2))
         ]
 
-        createGamesAndUpdate(homeTeams, awayTeams)
+        createGames(homeTeams, awayTeams)
+        updateGames(homeTeams, awayTeams)
 
         when:
         def gamesByTotalScore = gameDao.getSummaryByTotalScore()
+        def totalGameScoreList = getTotalGameScoreList(gamesByTotalScore)
 
         then:
-        noExceptionThrown()
+        totalGameScoreList.get(0) >= totalGameScoreList.get(1) && totalGameScoreList.get(1) >= totalGameScoreList.get(2)
     }
 
-    def "should sort games by creation date when number of goals is equal"() {
-        given:
-        def firstHomeTeam = new Team("Poland")
-        def secondHomeTeam = new Team("Germany")
-        def firstAwayTeam = new Team("Portugal")
-        def secondAwayTeam = new Team("Austria")
+//    def "should sort games by creation date when number of goals is equal"() {
+//        given:
+//        def firstHomeTeam = new Team("Poland")
+//        def secondHomeTeam = new Team("Germany")
+//        def firstAwayTeam = new Team("Portugal")
+//        def secondAwayTeam = new Team("Austria")
+//
+//        gameDao.create(firstHomeTeam, firstAwayTeam)
+//        gameDao.create(secondHomeTeam, secondAwayTeam)
+//
+//        firstHomeTeam.currentNumberOfGoals = 10
+//        firstAwayTeam.currentNumberOfGoals = 5
+//        secondHomeTeam.currentNumberOfGoals = 5
+//        secondAwayTeam.currentNumberOfGoals = 10
+//
+//        gameDao.update(firstHomeTeam, firstAwayTeam)
+//        gameDao.update(secondHomeTeam, secondAwayTeam)
+//
+//        when:
+//        def gamesByTotalScore = gameDao.getSummaryByTotalScore()
+//
+//        then:
+//        noExceptionThrown()
+//    }
 
-        gameDao.create(firstHomeTeam, firstAwayTeam)
-        gameDao.create(secondHomeTeam, secondAwayTeam)
-
-        firstHomeTeam.currentNumberOfGoals = 10
-        firstAwayTeam.currentNumberOfGoals = 5
-        secondHomeTeam.currentNumberOfGoals = 5
-        secondAwayTeam.currentNumberOfGoals = 10
-
-        gameDao.update(firstHomeTeam, firstAwayTeam)
-        gameDao.update(secondHomeTeam, secondAwayTeam)
-
-        when:
-        def gamesByTotalScore = gameDao.getSummaryByTotalScore()
-
-        then:
-        noExceptionThrown()
-    }
-
-    def createGamesAndUpdate(homeTeams, awayTeams) {
-        def random = new Random()
-        def range = 10
+    def createGames(homeTeams, awayTeams) {
         for (int i = 0; i < 3; i++) {
             def homeTeam = homeTeams.get(i)
             def awayTeam = awayTeams.get(i)
 
-            gameDao.create(homeTeam, awayTeam)
-
-            homeTeam.currentNumberOfGoals = random.nextInt(range)
-            awayTeam.currentNumberOfGoals = random.nextInt(range)
-
-            gameDao.update(homeTeam, awayTeam)
+            gameDao.create(homeTeam as Team, awayTeam as Team)
         }
+    }
+
+    def updateGames(homeTeams, awayTeams) {
+        for (int i = 0; i < 3; i++) {
+            def homeTeam = homeTeams.get(i)
+            def awayTeam = awayTeams.get(i)
+
+            homeTeam.currentNumberOfGoals = generateRandomInt()
+            awayTeam.currentNumberOfGoals = generateRandomInt()
+
+            gameDao.update(homeTeam as Team, awayTeam as Team)
+        }
+    }
+
+    def generateRandomInt() {
+        def random = new Random()
+        def range = 10
+
+        random.nextInt(range)
+    }
+
+    def getTotalGameScoreList(gamesByTotalScore) {
+        def totalGamesScores = []
+        gamesByTotalScore.each { game ->
+            totalGamesScores.add(calculateTotalNumberOfGoalsInGame(game))
+        }
+
+        totalGamesScores
+    }
+
+    def calculateTotalNumberOfGoalsInGame(game) {
+        game.getHomeTeam().getCurrentNumberOfGoals() + game.getAwayTeam().getCurrentNumberOfGoals()
     }
 }

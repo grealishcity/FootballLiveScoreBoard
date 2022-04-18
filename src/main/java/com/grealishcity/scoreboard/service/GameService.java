@@ -46,8 +46,6 @@ public class GameService {
         gameDao.update(homeTeam, awayTeam);
     }
 
-
-
     private void validateTeamsNames(String homeTeamName, String awayTeamName) {
         if (!teamValidator.test(homeTeamName)) {
             throw new IllegalArgumentException("Illegal home team name given: " + homeTeamName);

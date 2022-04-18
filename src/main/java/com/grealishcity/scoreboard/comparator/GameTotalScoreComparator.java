@@ -8,8 +8,8 @@ public class GameTotalScoreComparator implements Comparator<Game> {
 
     @Override
     public int compare(Game firstGame, Game secondGame) {
-        int totalNumberOfGoalsFirstGame = getTotalNumberOfGoals(firstGame);
-        int totalNumberOfGoalsSecondGame = getTotalNumberOfGoals(secondGame);
+        int totalNumberOfGoalsFirstGame = calculateTotalNumberOfGoals(firstGame);
+        int totalNumberOfGoalsSecondGame = calculateTotalNumberOfGoals(secondGame);
 
         if (totalNumberOfGoalsFirstGame != totalNumberOfGoalsSecondGame) {
             return Integer.compare(totalNumberOfGoalsSecondGame, totalNumberOfGoalsFirstGame);
@@ -18,7 +18,7 @@ public class GameTotalScoreComparator implements Comparator<Game> {
         }
     }
 
-    private int getTotalNumberOfGoals(Game game) {
+    private int calculateTotalNumberOfGoals(Game game) {
         return game.getHomeTeam().getCurrentNumberOfGoals() + game.getAwayTeam().getCurrentNumberOfGoals();
     }
 }
