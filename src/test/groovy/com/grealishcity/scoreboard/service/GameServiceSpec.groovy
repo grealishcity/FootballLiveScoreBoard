@@ -185,4 +185,12 @@ class GameServiceSpec extends Specification {
         }
     }
 
+    def "should call game dao to get summary by total score"() {
+        when:
+        gameService.getSummaryByTotalScore()
+
+        then:
+        1 * gameDao.getSummaryByTotalScore()
+    }
+
 }
