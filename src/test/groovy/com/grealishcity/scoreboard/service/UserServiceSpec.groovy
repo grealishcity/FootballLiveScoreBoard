@@ -28,16 +28,17 @@ class UserServiceSpec extends Specification {
         'not number'       | '!@#$%' || 0
     }
 
-    def "should return team name"() {
+    def "should return teams names"() {
         given:
-        def teamName = "test"
-        def scanner = new Scanner(teamName)
+        def homeTeamName = "Poland"
+        def awayTeamName = "Austria"
+        def scanner = new Scanner(homeTeamName + "\n" + awayTeamName)
         userService = new UserService(scanner)
 
         when:
-        def result = userService.getTeamName()
+        def teams = userService.getTeamName()
 
         then:
-        result == teamName
+        teams.containsAll([homeTeamName, awayTeamName])
     }
 }

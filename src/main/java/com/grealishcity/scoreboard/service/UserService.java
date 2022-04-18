@@ -1,5 +1,7 @@
 package com.grealishcity.scoreboard.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class UserService {
@@ -21,5 +23,15 @@ public class UserService {
         }
 
         return choice;
+    }
+
+    public List<String> getTeamName() {
+        List<String> teamsNames = new ArrayList<>();
+        System.out.print("Give home team name: ");
+        teamsNames.add(scanner.nextLine());
+        System.out.print("Give away team name: ");
+        teamsNames.add(scanner.nextLine());
+
+        return teamsNames;
     }
 }
