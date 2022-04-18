@@ -13,7 +13,7 @@ public class GameValidator {
 
     public boolean checkTeamIsAlreadyOnBoard(Team team) {
         return gameDao.getGames().stream()
-                .anyMatch(game -> game.getHomeTeam().equals(team) || game.getAwayTeam().equals(team));
+                .anyMatch(game -> game.getHomeTeam().getName().equals(team.getName()) || game.getAwayTeam().getName().equals(team.getName()));
     }
 
     public boolean checkGameExists(Team homeTeam, Team awayTeam) {
