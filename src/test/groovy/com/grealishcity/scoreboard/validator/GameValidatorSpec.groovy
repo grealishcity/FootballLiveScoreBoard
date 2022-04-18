@@ -18,7 +18,7 @@ class GameValidatorSpec extends Specification {
         def team = new Team("Poland")
 
         when:
-        def result = gameValidator.test(team)
+        def result = gameValidator.checkTeamIsAlreadyOnBoard(team)
 
         then:
         1 * gameDao.getGames() >> [new Game(team, team)]
@@ -31,7 +31,7 @@ class GameValidatorSpec extends Specification {
         def notExistingTeam = new Team("test")
 
         when:
-        def result = gameValidator.test(team)
+        def result = gameValidator.checkTeamIsAlreadyOnBoard(team)
 
         then:
         1 * gameDao.getGames() >> [new Game(notExistingTeam, notExistingTeam)]
