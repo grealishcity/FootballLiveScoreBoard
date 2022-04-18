@@ -55,7 +55,7 @@ class UserInputServiceSpec extends Specification {
 
     def "should throw exception when away team name is not valid"() {
         given:
-        def expectedExceptionMessage = "Invalid teams names given"
+        def expectedExceptionMessage = "Invalid home team or away team name given!"
         def scanner = new Scanner(homeTeamName + "\n" + awayTeamName)
         userService = new UserInputService(scanner, teamValidator)
 

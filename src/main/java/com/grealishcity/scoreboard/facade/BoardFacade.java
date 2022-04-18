@@ -3,9 +3,10 @@ package com.grealishcity.scoreboard.facade;
 import java.util.Scanner;
 
 import com.grealishcity.scoreboard.dao.GameDao;
+import com.grealishcity.scoreboard.exception.ObjectNotFoundException;
 import com.grealishcity.scoreboard.service.GameService;
 import com.grealishcity.scoreboard.service.UserInputService;
-import com.grealishcity.scoreboard.utils.Board;
+import com.grealishcity.scoreboard.helper.Board;
 import com.grealishcity.scoreboard.validator.GameValidator;
 import com.grealishcity.scoreboard.validator.TeamValidator;
 
@@ -24,13 +25,25 @@ public class BoardFacade {
 
             switch (choice) {
                 case 1:
-                    gameService.create(userService.getTeams());
+                    try {
+                        gameService.create(userService.getTeams());
+                    } catch (IllegalArgumentException | IllegalStateException e) {
+                        System.out.println(e.getMessage() + "\n");
+                    }
                     break;
                 case 2:
-                    gameService.finish(userService.getTeams());
+                    try {
+                        gameService.finish(userService.getTeams());
+                    } catch (IllegalArgumentException | ObjectNotFoundException e) {
+                        System.out.println(e.getMessage() + "\n");
+                    }
                     break;
                 case 3:
-                    gameService.update(userService.getTeamsWithGoals());
+                    try {
+                        gameService.update(userService.getTeamsWithGoals());
+                    } catch (IllegalArgumentException | ObjectNotFoundException e) {
+                        System.out.println(e.getMessage() + "\n");
+                    }
                     break;
                 case 4:
                     Board.displaySummary(gameService.getSummaryByTotalScore());
@@ -38,7 +51,7 @@ public class BoardFacade {
                 case 5:
                     System.exit(0);
                 default:
-                    System.out.print("Incorrect choice. Please try again.\n\n");
+                    System.out.println("Incorrect choice. Please try again.\n");
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.grealishcity.scoreboard.utils;
+package com.grealishcity.scoreboard.helper;
 
 import java.util.List;
 import java.util.stream.IntStream;
@@ -20,6 +20,7 @@ public class Board {
     public static void displaySummary(List<Game> games) {
         IntStream.range(0, games.size())
                 .forEach(index -> displayGameSummary(index + 1, games.get(index)));
+        System.out.println();
     }
 
     private static void displayGameSummary(int index, Game game) {
