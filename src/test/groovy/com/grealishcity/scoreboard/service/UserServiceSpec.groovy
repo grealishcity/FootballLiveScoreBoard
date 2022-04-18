@@ -16,15 +16,28 @@ class UserServiceSpec extends Specification {
         userService = new UserService(scanner)
 
         when:
-        def choice = userService.getUserChoice()
+        def result = userService.getUserChoice()
 
         then:
-        choice == expected
+        result == expected
 
         where:
         desc               | input   || expected
         'correct number'   | '1'     || 1
         'incorrect number' | '10'    || 10
         'not number'       | '!@#$%' || 0
+    }
+
+    def "should return team name"() {
+        given:
+        def teamName = "test"
+        def scanner = new Scanner(teamName)
+        userService = new UserService(scanner)
+
+        when:
+        def result = userService.getTeamName()
+
+        then:
+        result == teamName
     }
 }

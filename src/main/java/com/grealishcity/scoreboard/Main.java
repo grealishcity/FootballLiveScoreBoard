@@ -18,7 +18,7 @@ public class Main {
 
             switch (choice) {
                 case 1:
-//                    startGame();
+//                    gameService.create(userService.getTeamName(), userService.getTeamName());
                     break;
                 case 2:
 //                    finishGame();
