@@ -38,15 +38,15 @@ public class UserService {
 
         System.out.print("Give home team name: ");
         String homeTeamName = scanner.nextLine();
-        if (teamValidator.test(homeTeamName)) {
-            throw new IllegalArgumentException("");
-        }
+//        if (teamValidator.test(homeTeamName)) {
+//            throw new IllegalArgumentException("");
+//        }
 
         System.out.print("Give away team name: ");
         String awayTeamName = scanner.nextLine();
-        if (teamValidator.test(awayTeamName)) {
-            throw new IllegalArgumentException("");
-        }
+//        if (teamValidator.test(awayTeamName)) {
+//            throw new IllegalArgumentException("");
+//        }
 
         teamsNames.add(new Team(homeTeamName));
         teamsNames.add(new Team(awayTeamName));
