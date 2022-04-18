@@ -13,11 +13,11 @@ public class Main {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        UserService userService = new UserService(scanner);
-        GameDao gameDao = new GameDao();
         TeamValidator teamValidator = new TeamValidator();
+        UserService userService = new UserService(scanner, teamValidator);
+        GameDao gameDao = new GameDao();
         GameValidator gameValidator = new GameValidator(gameDao);
-        GameService gameService = new GameService(gameDao, teamValidator, gameValidator);
+        GameService gameService = new GameService(gameDao, gameValidator);
         int choice;
 
         while (true) {

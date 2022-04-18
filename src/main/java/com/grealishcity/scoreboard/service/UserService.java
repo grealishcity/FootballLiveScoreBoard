@@ -39,7 +39,7 @@ public class UserService {
             throw new IllegalArgumentException("");
         }
 
-        System.out.print("Give home team name: ");
+        System.out.print("Give away team name: ");
         String awayTeamName = scanner.nextLine();
         if (teamValidator.test(awayTeamName)) {
             throw new IllegalArgumentException("");
