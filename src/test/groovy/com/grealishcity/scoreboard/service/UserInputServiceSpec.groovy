@@ -7,7 +7,7 @@ import spock.lang.Specification
 import spock.lang.Subject
 import spock.lang.Unroll
 
-class UserServiceSpec extends Specification {
+class UserInputServiceSpec extends Specification {
 
     @Shared
     def homeTeamName = "Poland"
