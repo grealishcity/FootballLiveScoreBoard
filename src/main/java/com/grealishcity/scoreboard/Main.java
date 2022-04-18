@@ -35,7 +35,7 @@ public class Main {
                     gameService.update(userService.getTeamsNames());
                     break;
                 case 4:
-                    gameService.
+                    gameService.getSummaryByTotalScore();
                     break;
                 case 5:
                     System.exit(0);

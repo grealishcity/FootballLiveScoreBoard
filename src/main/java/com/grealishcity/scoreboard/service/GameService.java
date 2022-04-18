@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.grealishcity.scoreboard.dao.GameDao;
 import com.grealishcity.scoreboard.exception.ObjectNotFoundException;
+import com.grealishcity.scoreboard.model.Game;
 import com.grealishcity.scoreboard.model.Team;
 import com.grealishcity.scoreboard.validator.GameValidator;
 import com.grealishcity.scoreboard.validator.TeamValidator;
@@ -51,6 +52,10 @@ public class GameService {
 
         gameValidator.checkGameExists(homeTeam, awayTeam);
         gameDao.update(homeTeam, awayTeam);
+    }
+
+    public List<Game> getSummaryByTotalScore() {
+        return gameDao.getSummaryByTotalScore();
     }
 
     private void validateTeamsNames(String homeTeamName, String awayTeamName) {
