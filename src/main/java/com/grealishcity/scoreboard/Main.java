@@ -9,11 +9,12 @@ public class Main {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        UserService userService = new UserService(scanner);
         int choice;
 
         while (true) {
             Menu.display();
-            choice = new UserService(scanner).getUserChoice();
+            choice = userService.getUserChoice();
 
             switch (choice) {
                 case 1:
