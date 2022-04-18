@@ -1,10 +1,13 @@
 package com.grealishcity.scoreboard.service
 
+import com.grealishcity.scoreboard.validator.TeamValidator
 import spock.lang.Specification
 import spock.lang.Subject
 import spock.lang.Unroll
 
 class UserServiceSpec extends Specification {
+
+    def teamValidator = Mock(TeamValidator)
 
     @Subject
     def userService
@@ -13,7 +16,7 @@ class UserServiceSpec extends Specification {
     def "should return #expected when input is #desc"() {
         given:
         def scanner = new Scanner(input)
-        userService = new UserService(scanner)
+        userService = new UserService(scanner, teamValidator)
 
         when:
         def result = userService.getUserChoice()
@@ -24,7 +27,9 @@ class UserServiceSpec extends Specification {
         where:
         desc               | input   || expected
         'correct number'   | '1'     || 1
+        'incorrect number' | '-10'   || 0
         'incorrect number' | '10'    || 10
+        'incorrect number' | '0'     || 0
         'not number'       | '!@#$%' || 0
     }
 
