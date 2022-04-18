@@ -32,7 +32,7 @@ public class Main {
                     gameService.finish(userService.getTeamsNames());
                     break;
                 case 3:
-                    gameService.update(userService.getTeamsNames());
+                    gameService.update(userService.getTeamsNamesWithGoals());
                     break;
                 case 4:
                     Board.displaySummary(gameService.getSummaryByTotalScore());

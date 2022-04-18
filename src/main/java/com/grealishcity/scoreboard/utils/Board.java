@@ -20,7 +20,6 @@ public class Board {
     public static void displaySummary(List<Game> games) {
         IntStream.range(0, games.size())
                 .forEach(index -> displayGameSummary(index + 1, games.get(index)));
-
     }
 
     private static void displayGameSummary(int index, Game game) {

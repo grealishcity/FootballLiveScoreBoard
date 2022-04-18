@@ -41,4 +41,22 @@ class UserServiceSpec extends Specification {
         then:
         teams.containsAll([homeTeamName, awayTeamName])
     }
+
+    def "should return teams with goals"() {
+        given:
+        def homeTeamName = "Poland"
+        def awayTeamName = "Austria"
+        def homeTeamGoals = "5"
+        def awayTeamGoals = "6"
+        def scanner = new Scanner(homeTeamName + "\n" + awayTeamName + "\n" + homeTeamGoals + "\n" + awayTeamGoals)
+        userService = new UserService(scanner)
+
+        when:
+        def teams = userService.getTeamsNamesWithGoals()
+
+        then:
+        teams.containsAll([homeTeamGoals, awayTeamGoals])
+    }
 }
+
+
