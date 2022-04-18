@@ -2,15 +2,16 @@ package com.grealishcity.scoreboard.service
 
 import spock.lang.Specification
 import spock.lang.Subject
+import spock.lang.Unroll
 
 class UserServiceSpec extends Specification {
 
     @Subject
     def userService
 
-    def "should return user choice when input is correct"() {
+    @Unroll
+    def "should return #expected when input is #desc"() {
         given:
-        def input = "1"
         def scanner = new Scanner(input)
         userService = new UserService(scanner)
 
@@ -18,6 +19,12 @@ class UserServiceSpec extends Specification {
         def choice = userService.getUserChoice()
 
         then:
-        choice == Integer.valueOf(input)
+        choice == expected
+
+        where:
+        desc               | input   || expected
+        'correct number'   | '1'     || 1
+        'incorrect number' | '10'    || 10
+        'not number'       | '!@#$%' || 0
     }
 }
