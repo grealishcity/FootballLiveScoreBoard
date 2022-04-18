@@ -1,11 +1,9 @@
 package com.grealishcity.scoreboard.validator;
 
-import java.util.function.Predicate;
-
 import com.grealishcity.scoreboard.dao.GameDao;
 import com.grealishcity.scoreboard.model.Team;
 
-public class GameValidator implements Predicate<Team> {
+public class GameValidator {
 
     private final GameDao gameDao;
 
@@ -13,9 +11,9 @@ public class GameValidator implements Predicate<Team> {
         this.gameDao = gameDao;
     }
 
-    @Override
-    public boolean test(Team team) {
-        return checkTeamIsAlreadyOnBoard(team);
+    public boolean checkTeamIsAlreadyOnBoard(Team team) {
+        return gameDao.getGames().stream()
+                .anyMatch(game -> game.getHomeTeam().equals(team) || game.getAwayTeam().equals(team));
     }
 
     public boolean checkGameExists(Team homeTeam, Team awayTeam) {
@@ -23,9 +21,4 @@ public class GameValidator implements Predicate<Team> {
                 .anyMatch(game -> game.getHomeTeam().equals(homeTeam) && game.getAwayTeam().equals(awayTeam));
     }
 
-
-    private boolean checkTeamIsAlreadyOnBoard(Team teamName) {
-        return gameDao.getGames().stream()
-                .anyMatch(game -> game.getHomeTeam().equals(teamName) || game.getAwayTeam().equals(teamName));
-    }
 }

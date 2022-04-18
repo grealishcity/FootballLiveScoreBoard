@@ -7,69 +7,55 @@ import com.grealishcity.scoreboard.exception.ObjectNotFoundException;
 import com.grealishcity.scoreboard.model.Game;
 import com.grealishcity.scoreboard.model.Team;
 import com.grealishcity.scoreboard.validator.GameValidator;
-import com.grealishcity.scoreboard.validator.TeamValidator;
 
 public class GameService {
 
     private final GameDao gameDao;
-    private final TeamValidator teamValidator;
     private final GameValidator gameValidator;
 
-    public GameService(GameDao gameDao, TeamValidator teamValidator, GameValidator gameValidator) {
+    public GameService(GameDao gameDao, GameValidator gameValidator) {
         this.gameDao = gameDao;
-        this.teamValidator = teamValidator;
         this.gameValidator = gameValidator;
     }
 
-    public void create(List<String> teamsNames) {
-        validateTeamsNames(teamsNames.get(0), teamsNames.get(1));
+    public void create(List<Team> teams) {
+        Team homeTeam = teams.get(0);
+        Team awayTeam = teams.get(0);
 
-        Team homeTeam = new Team(teamsNames.get(0));
-        Team awayTeam = new Team(teamsNames.get(1));
+        if (gameValidator.checkTeamIsAlreadyOnBoard(homeTeam)) {
+            throw new IllegalStateException("Given home team: " + homeTeam.getName() + " is already on board!");
+        }
 
-        validateTeamIsAlreadyOnBoard(homeTeam, awayTeam);
+        if (gameValidator.checkTeamIsAlreadyOnBoard(awayTeam)) {
+            throw new IllegalStateException("Given away team: " + awayTeam.getName() + " is already on board!");
+        }
 
         gameDao.create(homeTeam, awayTeam);
     }
 
-    public void finish(List<String> teamsNames) {
-        validateTeamsNames(teamsNames.get(0), teamsNames.get(1));
-
-        Team homeTeam = new Team(teamsNames.get(0));
-        Team awayTeam = new Team(teamsNames.get(1));
+    public void finish(List<Team> teams) {
+        Team homeTeam = teams.get(0);
+        Team awayTeam = teams.get(0);
 
         if (!gameValidator.checkGameExists(homeTeam, awayTeam)) {
-            throw new ObjectNotFoundException("Game not found for given home team: " + teamsNames.get(0) + " and away team: " + teamsNames.get(1));
+            throw new ObjectNotFoundException("Game not found for given home team: " + homeTeam.getName() + " and away team: " + awayTeam.getName());
         }
+
         gameDao.finish(homeTeam, awayTeam);
     }
 
-    public void update(List<String> teamsNames) {
-        validateTeamsNames(teamsNames.get(0), teamsNames.get(1));
+    public void update(List<Team> teams) {
+        Team homeTeam = teams.get(0);
+        Team awayTeam = teams.get(1);
 
-        Team homeTeam = new Team(teamsNames.get(0));
-        Team awayTeam = new Team(teamsNames.get(1));
+        if (!gameValidator.checkGameExists(homeTeam, awayTeam)) {
+            throw new ObjectNotFoundException("Game not found for given home team: " + homeTeam.getName() + " and away team: " + awayTeam.getName());
+        }
 
-        gameValidator.checkGameExists(homeTeam, awayTeam);
         gameDao.update(homeTeam, awayTeam);
     }
 
     public List<Game> getSummaryByTotalScore() {
         return gameDao.getSummaryByTotalScore();
-    }
-
-    private void validateTeamsNames(String homeTeamName, String awayTeamName) {
-        if (!teamValidator.test(homeTeamName)) {
-            throw new IllegalArgumentException("Illegal home team name given: " + homeTeamName);
-        } else if (!teamValidator.test(awayTeamName)) {
-            throw new IllegalArgumentException("Illegal away team name given: " + awayTeamName);
-        }
-    }
-    private void validateTeamIsAlreadyOnBoard(Team homeTeam, Team awayTeam) {
-        if (gameValidator.test(homeTeam)) {
-            throw new IllegalStateException("Team is already on board: " + homeTeam.getName());
-        } else if (gameValidator.test(awayTeam)) {
-            throw new IllegalStateException("Team is already on board: " + awayTeam.getName());
-        }
     }
 }

@@ -26,13 +26,13 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    gameService.create(userService.getTeamsNames());
+                    gameService.create(userService.getTeams());
                     break;
                 case 2:
-                    gameService.finish(userService.getTeamsNames());
+                    gameService.finish(userService.getTeams());
                     break;
                 case 3:
-                    gameService.update(userService.getTeamsNamesWithGoals());
+                    gameService.update(userService.getTeamsWithGoals());
                     break;
                 case 4:
                     Board.displaySummary(gameService.getSummaryByTotalScore());

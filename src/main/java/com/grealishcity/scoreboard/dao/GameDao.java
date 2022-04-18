@@ -35,7 +35,9 @@ public class GameDao {
         return games.stream()
                 .filter(game -> isHomeTeamAndAwayTeamPresent(game, homeTeam, awayTeam))
                 .findAny()
-                .orElseThrow(() -> new ObjectNotFoundException("Game not found for given home team: " + homeTeam.getName() + " and away team: " + awayTeam.getName()));
+                .orElseThrow(() -> new ObjectNotFoundException(
+                        "Game not found for given home team: " + homeTeam.getName() + " and away team: " + awayTeam.getName())
+                );
     }
 
     private boolean isHomeTeamAndAwayTeamPresent(Game game, Team homeTeam, Team awayTeam) {
