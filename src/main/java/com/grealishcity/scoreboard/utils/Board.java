@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 import com.grealishcity.scoreboard.model.Game;
+import com.grealishcity.scoreboard.model.Team;
 
 public class Board {
 
@@ -16,9 +17,18 @@ public class Board {
         System.out.println("5. Exit.");
     }
 
-    public static void displaySummary(List<Game> summaryByTotalScore) {
-        IntStream.of(0, summaryByTotalScore.size())
-                .forEach(index -> System.out.println(index));
+    public static void displaySummary(List<Game> games) {
+        IntStream.range(0, games.size())
+                .forEach(index -> displayGameSummary(index + 1, games.get(index)));
+
+    }
+
+    private static void displayGameSummary(int index, Game game) {
+        Team homeTeam = game.getHomeTeam();
+        Team awayTeam = game.getAwayTeam();
+        System.out.printf("%d. %s %d - %s %d%n",
+                index, homeTeam.getName(), homeTeam.getCurrentNumberOfGoals(), awayTeam.getName(), awayTeam.getCurrentNumberOfGoals()
+        );
     }
 }
 //
