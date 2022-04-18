@@ -49,28 +49,13 @@ class UserInputServiceSpec extends Specification {
         def teams = userService.getTeams()
 
         then:
-        2 * teamValidator.test(_ as String) >> true
+        1 * teamValidator.test(homeTeamName, awayTeamName) >> true
         teams.get(0).name == homeTeamName && teams.get(1).name == awayTeamName
-    }
-
-    def "should throw exception when home team name is not valid"() {
-        given:
-        def expectedExceptionMessage = "Invalid home team name given: " + homeTeamName
-        def scanner = new Scanner(homeTeamName + "\n" + awayTeamName)
-        userService = new UserInputService(scanner, teamValidator)
-
-        when:
-        userService.getTeams()
-
-        then:
-        1 * teamValidator.test(homeTeamName) >> false
-        def e = thrown(IllegalArgumentException)
-        e.message == expectedExceptionMessage
     }
 
     def "should throw exception when away team name is not valid"() {
         given:
-        def expectedExceptionMessage = "Invalid away team name given: " + awayTeamName
+        def expectedExceptionMessage = "Invalid teams names given"
         def scanner = new Scanner(homeTeamName + "\n" + awayTeamName)
         userService = new UserInputService(scanner, teamValidator)
 
@@ -78,8 +63,7 @@ class UserInputServiceSpec extends Specification {
         userService.getTeams()
 
         then:
-        1 * teamValidator.test(homeTeamName) >> true
-        1 * teamValidator.test(awayTeamName) >> false
+        1 * teamValidator.test(homeTeamName, awayTeamName) >> false
         def e = thrown(IllegalArgumentException)
         e.message == expectedExceptionMessage
     }
@@ -95,7 +79,7 @@ class UserInputServiceSpec extends Specification {
         def teams = userService.getTeamsWithGoals()
 
         then:
-        2 * teamValidator.test(_ as String) >> true
+        1 * teamValidator.test(homeTeamName, awayTeamName) >> true
         teams.get(0).name == homeTeamName && teams.get(0).getCurrentNumberOfGoals() == Integer.valueOf(homeTeamGoals)
         teams.get(1).name == awayTeamName && teams.get(1).getCurrentNumberOfGoals() == Integer.valueOf(awayTeamGoals)
     }

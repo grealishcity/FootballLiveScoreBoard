@@ -8,9 +8,7 @@ public class TeamValidator implements BiPredicate<String, String> {
 
     @Override
     public boolean test(String homeTeamName, String awayTeamName) {
-        boolean isHomeTeamValid = isTeamNameValid(homeTeamName);
-        boolean isAwayTeamValid = isTeamNameValid(awayTeamName);
-        return isHomeTeamValid && isAwayTeamValid && !homeTeamName.equalsIgnoreCase(awayTeamName);
+        return isTeamNameValid(homeTeamName) && isTeamNameValid(awayTeamName) && !homeTeamName.equalsIgnoreCase(awayTeamName);
     }
 
     private boolean isTeamNameValid(String teamName) {

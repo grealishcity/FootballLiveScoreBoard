@@ -42,7 +42,7 @@ public class UserInputService {
         String awayTeamName = scanner.nextLine();
 
         if (!teamValidator.test(homeTeamName, awayTeamName)) {
-
+            throw new IllegalArgumentException("Invalid teams names given");
         }
 
         teamsNames.add(new Team(homeTeamName));
