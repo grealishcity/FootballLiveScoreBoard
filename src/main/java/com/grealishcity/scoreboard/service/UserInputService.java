@@ -53,16 +53,30 @@ public class UserInputService {
 
     public List<Team> getTeamsWithGoals() {
         List<Team> teams = getTeams();
+        int homeTeamGoals;
+        int awayTeamGoals;
 
         System.out.print("Give home team goals: ");
-        int homeTeamGoals = scanner.nextInt();
-        teams.get(0).setCurrentNumberOfGoals(homeTeamGoals);
+        try {
+            homeTeamGoals = Integer.parseInt(scanner.nextLine());
+            teams.get(0).setCurrentNumberOfGoals(homeTeamGoals);
+        } catch (NumberFormatException e) {
+            homeTeamGoals = 0;
+        }
 
         System.out.print("Give away team goals: ");
-        int awayTeamGoals = scanner.nextInt();
-        teams.get(1).setCurrentNumberOfGoals(awayTeamGoals);
+        try {
+            awayTeamGoals = Integer.parseInt(scanner.nextLine());
+            teams.get(1).setCurrentNumberOfGoals(homeTeamGoals);
+        } catch (NumberFormatException e) {
+            awayTeamGoals = 0;
+        }
 
         scanner.nextLine();
+
+        if (homeTeamGoals < 0 || awayTeamGoals < 0) {
+            throw new IllegalArgumentException("Incorrect number of goals given!");
+        }
 
         return teams;
     }
