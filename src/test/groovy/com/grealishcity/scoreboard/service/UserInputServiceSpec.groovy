@@ -83,6 +83,7 @@ class UserInputServiceSpec extends Specification {
         teams.get(0).name == homeTeamName && teams.get(0).getCurrentNumberOfGoals() == Integer.valueOf(homeTeamGoals)
         teams.get(1).name == awayTeamName && teams.get(1).getCurrentNumberOfGoals() == Integer.valueOf(awayTeamGoals)
     }
+
 }
 
 
