@@ -72,7 +72,7 @@ class UserInputServiceSpec extends Specification {
         given:
         def homeTeamGoals = "5"
         def awayTeamGoals = "6"
-        def scanner = new Scanner(homeTeamName + "\n" + awayTeamName + "\n" + homeTeamGoals + "\n" + awayTeamGoals)
+        def scanner = new Scanner(homeTeamName + "\n" + awayTeamName + "\n" + homeTeamGoals + "\n" + awayTeamGoals  )
         userService = new UserInputService(scanner, teamValidator)
 
         when:

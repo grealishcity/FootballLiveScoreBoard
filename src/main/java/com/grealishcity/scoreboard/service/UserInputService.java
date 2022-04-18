@@ -67,12 +67,10 @@ public class UserInputService {
         System.out.print("Give away team goals: ");
         try {
             awayTeamGoals = Integer.parseInt(scanner.nextLine());
-            teams.get(1).setCurrentNumberOfGoals(homeTeamGoals);
+            teams.get(1).setCurrentNumberOfGoals(awayTeamGoals);
         } catch (NumberFormatException e) {
             awayTeamGoals = 0;
         }
-
-        scanner.nextLine();
 
         if (homeTeamGoals < 0 || awayTeamGoals < 0) {
             throw new IllegalArgumentException("Incorrect number of goals given!");
